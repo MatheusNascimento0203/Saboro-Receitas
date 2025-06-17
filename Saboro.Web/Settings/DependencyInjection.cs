@@ -1,6 +1,7 @@
 using Saboro.Core.Settings;
+using Saboro.Data.Context;
 
-namespace SmnRun.Web.Settings;
+namespace Saboro.Web.Settings;
 
 public static class DependencyInjection
 {
