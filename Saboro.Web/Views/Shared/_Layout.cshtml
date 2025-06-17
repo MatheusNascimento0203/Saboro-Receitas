@@ -1,10 +1,17 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Saboro.Web</title>
+    <script src="~/dist/izitoast.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/uikit.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/jquery.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/runtime.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/home.entry.js" asp-append-version="true"></script>
 </head>
+
 <body>
     <header>
     </header>
@@ -16,4 +23,5 @@
     <footer></footer>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
