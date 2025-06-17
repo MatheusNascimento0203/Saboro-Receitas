@@ -9,5 +9,7 @@ namespace Saboro.Data.Context;
 public class ApplicationDbContext(AppSettings appSettings, ILogger<ApplicationDbContext> logWriter)
     : BaseDbContext(appSettings, logWriter, Assembly.GetExecutingAssembly())
 {
-
+    public DbSet<NivelCulinario> NiveisCulinarios { get; set; }
+    public DbSet<CategoriaFavorita> CategoriasFavoritas { get; set; }
+    public DbSet<Usuario> Usuarios { get; set; }
 }
