@@ -1,0 +1,122 @@
+@{
+    Layout = null;
+    var errorMessage = TempData["ErrorMessage"] as string;
+    var successMessage = TempData["SuccessMessage"] as string;
+    var title = "Saboro Receitas";
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@title</title>
+    <link rel="icon" href="~/favicon.ico">
+    <script src="~/dist/izitoast.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/jquery.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/uikit.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/runtime.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/login.entry.js" asp-append-version="true"></script>
+</head>
+
+<body>
+    <div class="uk-flex uk-flex-center uk-flex-middle uk-height-viewport uk-background-secondary">
+        <div
+            class="uk-width-large uk-background-default padding-large@xl padding-medium uk-box-shadow-small uk-border-rounded">
+            <div class="uk-flex uk-flex-middle uk-flex-center uk-margin-bottom-small">
+                <div
+                    class="uk-flex uk-flex-middle uk-flex-center uk-text-center uk-background-secondary container-logo-login">
+                    <i class="icone-logo-login"></i>
+                </div>
+            </div>
+
+            <form id="form-login" method="post" action='@Url.Action("Index", "Login")' data-default>
+                <h2 class="uk-text-bold uk-text-center uk-margin-remove-bottom">Saboro</h2>
+                <p class="uk-text-center uk-margin-remove-top uk-margin-remove-bottom subtitulo-login">Faça login para
+                    acessar suas receitas culinárias</p>
+
+                <div class=" uk-margin">
+                    <label for="email" class="uk-form-label uk-text-bold">Email</label>
+                    <div class="uk-form-controls">
+                        <input type="email" name="email" id="email" autocomplete="email" placeholder="Insira seu E-mail"
+                            required class="uk-border-rounded uk-input focus-input">
+                    </div>
+                </div>
+
+                <div class="uk-margin">
+                    <label for="senha" class="uk-form-label uk-text-bold">Senha</label>
+                    <div class="uk-form-controls">
+                        <input type="password" name="senha" id="senha" placeholder="Insira sua senha"
+                            autocomplete="current-password" required class="uk-border-rounded uk-input focus-input">
+                    </div>
+                </div>
+
+                <div class="uk-flex uk-flex-between uk-margin">
+                    <label>
+                        <input id="Lembrar-me" name="manterConectado" type="checkbox"
+                            class="uk-checkbox uk-border-rounded">
+                        Lembrar-me
+                    </label>
+                    <a class="uk-link-text uk-text-primary"
+                        onclick="">Esqueci minha senha</a>
+                </div>
+
+                <div class="uk-margin">
+                    <button type="submit"
+                        class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded uk-text-bold uk-background-primary">Entrar</button>
+                </div>
+
+                <div class="uk-flex uk-flex-center">
+                    <p>Não tem Conta?</p>
+                    <a class="uk-link-text uk-text-primary link-criar-conta" href='@Url.Action("GetCriarConta", "Login")'
+                        onclick="">Criar Conta</a>
+                </div>
+            </form>
+
+            <form id="form-redefinir-senha" data-view="login"
+                onsubmit="event.preventDefault(); return colegioLiceu.login.enviarRedefinicaoSenha(this)"
+                class="uk-hidden">
+                <h2 class="uk-text-bold uk-text-center">Esqueci minha Senha</h2>
+                <p class="uk-text-center">Digite seu e-mail cadastrado para receber instruções de recuperação de senha.
+                </p>
+
+                <div class="uk-margin">
+                    <label for="email-redefinir" class="uk-form-label uk-text-bold">Email</label>
+                    <div class="uk-form-controls">
+                        <input type="email" name="email" id="email-redefinir" autocomplete="email" placeholder="E-mail"
+                            required class="uk-border-rounded uk-input uk-form uk-background-secondary uk-form-blank">
+                    </div>
+                </div>
+
+                <div class="uk-margin">
+                    <button type="submit"
+                        class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded uk-text-bold uk-background-primary">Enviar
+                        instruções</button>
+                </div>
+
+                <div class="uk-text-center uk-margin-top">
+                    <a class="uk-link-text uk-text-primary uk-text-decoration-none"
+                        onclick="colegioLiceu.login.voltar(); return false;">
+                        ← Voltar para o login
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        colegioLiceu.login.init({
+            message: {
+                error: '@TempData["ErrorMessage"]',
+                success: '@TempData["SuccessMessage"]'
+            },
+            url: {
+                @* enviarRedefinicaoSenha: '@Url.Action("EnviarRedefinicaoSenha", "Login")', *@
+                formCriarUsuario: '@Url.Action("GetCriarConta", "Login")',
+            }
+        });
+    </script>
+</body>
+
+</html>

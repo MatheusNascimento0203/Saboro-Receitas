@@ -1,15 +1,17 @@
-using System.Diagnostics;
+using Saboro.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace Saboro.Web.Controllers;
 
-public class HomeController(ILogger<HomeController> logger) : Controller
+public class HomeController() : BaseController
 {
-    private readonly ILogger<HomeController> _logger = logger;
-
-    public IActionResult Index()
+    [HttpGet("home")]
+    public IActionResult Index() => View();
+    
+    [HttpGet("logout")]
+    public IActionResult Logout()
     {
-        return View();
+        HttpContext.LogOut();
+        return RedirectToAction("Index", "Login");
     }
 }

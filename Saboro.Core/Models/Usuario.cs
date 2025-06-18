@@ -5,10 +5,11 @@ public class Usuario
     public int Id { get; set; }
     public int IdCategoriaFavorita { get; set; }
     public int IdNivelCulinario { get; set; }
+    public int IdUsuarioStatus{ get; set; }
     public string NomeCompleto { get; set; }
     public string Email { get; set; }
     public string Senha { get; set; }
-    public int UsuarioCadastro { get; set; } 
+    public int UsuarioCadastro { get; set; }
     public DateTime DataCadastro { get; set; } = DateTime.Now;
     public int? UsuarioUltimaAlteracao { get; set; }
     public DateTime? DataUltimaAlteracao { get; set; }
@@ -18,5 +19,6 @@ public class Usuario
 
     public CategoriaFavorita CategoriaFavorita { get; set; }
     public NivelCulinario NivelCulinario { get; set; }
+    public UsuarioStatus UsuarioStatus { get; set; }
 
 }

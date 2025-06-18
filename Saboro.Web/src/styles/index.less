@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import "./padding.less";
+
+:root {
+    --cor-laranja: #EA580C;
+    --cor-laranja-claro: #FFEDD5;
+    --cor-branco: #FFFFFF;
+}
+
+body,
+* {
+    font-family: "Geist", sans-serif !important;
+}
+
+.uk-background-primary {
+    background-color: var(--cor-laranja) !important;
+}
+
+.uk-background-secondary {
+    background-color: var(--cor-laranja-claro) !important;
+}
+
+.uk-text-primary {
+    color: var(--cor-laranja) !important;
+}
+
+.uk-text-secondary {
+    color: var(--cor-laranja-claro) !important;
+}
+
+.uk-text-muted {
+    color: var(--cor-branco) !important;
+}
+
+.icone-logo-login {
+    display: inline-block;
+    background-image: url(../img/icone-logo-login.png) !important;
+    width: 24px;
+    height: 24px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.focus-input:focus {
+    border-color: var(--cor-laranja) !important;
+}
+

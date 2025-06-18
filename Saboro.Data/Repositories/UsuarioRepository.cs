@@ -40,6 +40,20 @@ public class UsuarioRepository(ApplicationDbContext dbContext) : BaseRepository(
             .FirstOrDefaultAsync();
     }
 
+    public async Task<Usuario> BuscarNomePeloIdAsync(int idUsuario)
+    {
+        if (idUsuario <= 0)
+            return null;
+
+        return await _dbContext.Usuarios
+            .Where(u => u.Id == idUsuario)
+            .Select(u => new Usuario
+            {
+                Id = u.Id,
+                NomeCompleto = u.NomeCompleto
+            }).FirstOrDefaultAsync();
+    }
+
     public async Task AtualizarAsync(int id, object modifiedFields)
     {
         await _dbContext.UpdateEntryAsync<Usuario>(id, modifiedFields);

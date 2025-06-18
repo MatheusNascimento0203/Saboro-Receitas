@@ -1,6 +1,6 @@
 namespace Saboro.Core.Enums;
 
-public class TentativasLoginEnum
+public enum TentativasLoginEnum
 {
     aviso = 1,
     bloqueio = 2,

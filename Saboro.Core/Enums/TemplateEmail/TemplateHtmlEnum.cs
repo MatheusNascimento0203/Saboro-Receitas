@@ -1,6 +1,6 @@
 namespace Saboro.Core.Enums.TemplateEmail;
 
-public class TemplateHtmlEnum
+public enum TemplateHtmlEnum
 {
     RedefinirSenha
 }

@@ -22,6 +22,10 @@ module.exports = {
             import: "./src/pages/home/index.ts",
             dependOn: ["izitoast", "jquery", "uikit"],
         },
+        login: {
+            import: "./src/pages/login/index.ts",
+            dependOn: ["izitoast", "jquery", "uikit"],
+        },
     },
     module: {
         rules: [

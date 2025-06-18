@@ -1,6 +1,6 @@
 
 using Microsoft.Extensions.DependencyInjection;
-using SmnRun.Data.Context;
+using Saboro.Data.Context;
 
 namespace SmnRun.Data.Helpers;
 public class Configuration

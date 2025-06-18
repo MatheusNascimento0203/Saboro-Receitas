@@ -1,4 +1,4 @@
-namespace ColegioLiceu.Core.Interfaces.Helpers;
+namespace Saboro.Core.Interfaces.Helpers;
 
 public interface IEncryption
 {

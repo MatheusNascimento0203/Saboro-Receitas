@@ -1,0 +1,102 @@
+@{
+    Layout = null;
+    var errorMessage = TempData["ErrorMessage"] as string;
+    var successMessage = TempData["SuccessMessage"] as string;
+    var title = "Criar Usuario - Saboro Receitas";
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@title</title>
+    <link rel="icon" href="~/favicon.ico">
+    <script src="~/dist/izitoast.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/jquery.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/uikit.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/runtime.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/login.entry.js" asp-append-version="true"></script>
+</head>
+
+<body>
+    <div class="uk-flex uk-flex-center uk-flex-middle uk-height-viewport uk-background-secondary">
+        <div
+            class="uk-width-large uk-background-default padding-large@xl padding-medium uk-box-shadow-small uk-border-rounded uk-margin-top uk-margin-bottom">
+            <div class="uk-flex uk-flex-middle uk-flex-center uk-margin-bottom-small">
+                <div
+                    class="uk-flex uk-flex-middle uk-flex-center uk-text-center uk-background-secondary container-logo-login">
+                    <i class="icone-logo-login"></i>
+                </div>
+            </div>
+
+            <form id="form-criar-usuario" method="post" onsubmit="" data-default>
+                <h2 class="uk-text-bold uk-text-center uk-margin-remove-bottom">Criar Conta</h2>
+                <p class="uk-text-center uk-margin-remove-top uk-margin-remove-bottom subtitulo-login">Crie sua conta
+                    para começar a gerenciar as suas receitas</p>
+
+                <div class=" uk-margin">
+                    <label for="nomeCompleto" class="uk-form-label uk-text-bold">Nome Completo</label>
+                    <div class="uk-form-controls">
+                        <input type="text" name="NomeCompleto" id="nome-completo" placeholder="Seu Nome Completo"
+                            required class="uk-border-rounded uk-input focus-input">
+                    </div>
+                </div>
+
+                <div class=" uk-margin">
+                    <label for="email" class="uk-form-label uk-text-bold">Email</label>
+                    <div class="uk-form-controls">
+                        <input type="email" name="email" id="email" autocomplete="email" placeholder="Insira seu E-mail"
+                            required class="uk-border-rounded uk-input focus-input">
+                    </div>
+                </div>
+
+                <div class="uk-margin">
+                    <label for="senha" class="uk-form-label uk-text-bold">Senha</label>
+                    <div class="uk-form-controls">
+                        <input type="password" name="senha" id="senha" placeholder="Insira sua senha"
+                            autocomplete="current-password" required class="uk-border-rounded uk-input focus-input">
+                    </div>
+                </div>
+
+                <div class="uk-margin">
+                    <label for="confirmaSenha" class="uk-form-label uk-text-bold">Confirmar Senha</label>
+                    <div class="uk-form-controls">
+                        <input type="password" name="confimarSenha" id="confirmar-senha"
+                            placeholder="Confirme sua senha" autocomplete="current-password" required
+                            class="uk-border-rounded uk-input focus-input">
+                    </div>
+                </div>
+
+                <div class="uk-margin">
+                    <button type="submit"
+                        class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded uk-text-bold uk-background-primary">Criar
+                        Conta</button>
+                </div>
+
+                <div class="uk-flex uk-flex-center uk-margin-top">
+                    <p>Já tem conta?</p>
+                    <a class="uk-link-text uk-text-primary link-criar-conta"
+                        onclick="window.history.back(); return false;">
+                        Fazer Login
+                    </a>
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        colegioLiceu.login.init({
+            message: {
+                error: '@TempData["ErrorMessage"]',
+                success: '@TempData["SuccessMessage"]'
+            },
+            url: {
+                enviarRedefinicaoSenha: '@Url.Action("EnviarRedefinicaoSenha", "Login")',
+            }
+        });
+    </script>
+</body>
+
+</html>

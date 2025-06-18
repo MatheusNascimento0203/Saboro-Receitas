@@ -12,6 +12,7 @@ CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 var builder = WebApplication.CreateBuilder(args);
 
 var appSettings = builder.Configuration.Get<AppSettings>();
+builder.Configuration.Bind(appSettings);
 
 builder.Services.AddDependencies(appSettings);
 builder.Services.AddHttpClient();
@@ -25,7 +26,7 @@ using var scope = app.Services.CreateScope();
 
 if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
+app.UseHsts();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
