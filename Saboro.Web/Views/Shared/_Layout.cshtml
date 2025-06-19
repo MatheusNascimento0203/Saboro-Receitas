@@ -1,10 +1,18 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Saboro.Core.Extensions
+@{
+    var cdnVersion = DateTime.Now.Ticks;
+    var errorMessage = TempData["ErrorMessage"] as string;
+    var successMessage = TempData["SuccessMessage"] as string;
+    var title = "Saboro Receitas";
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Saboro.Web</title>
+    <title>@title</title>
     <script src="~/dist/izitoast.entry.js" asp-append-version="true"></script>
     <script src="~/dist/uikit.entry.js" asp-append-version="true"></script>
     <script src="~/dist/jquery.entry.js" asp-append-version="true"></script>
@@ -14,14 +22,25 @@
 
 <body>
     <header>
+        <div>
+            <a href='@Url.Action("Logout", "Home")'>
+                <button>SAIR</button>
+            </a>
+        </div>
     </header>
     <div class="">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-    <footer></footer>
-    @await RenderSectionAsync("Scripts", required: false)
+    @if (!string.IsNullOrEmpty(TempData.ErrorMessage()))
+    {
+        <script>saboro.home.Toast.error('@TempData.ErrorMessage()')</script>
+    }
+    @if (!string.IsNullOrEmpty(TempData.SuccessMessage()))
+    {
+        <script>saboro.home.Toast.success('@TempData.SuccessMessage()')</script>
+    }
 </body>
 
 </html>

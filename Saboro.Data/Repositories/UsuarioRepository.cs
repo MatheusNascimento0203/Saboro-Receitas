@@ -40,6 +40,7 @@ public class UsuarioRepository(ApplicationDbContext dbContext) : BaseRepository(
             .FirstOrDefaultAsync();
     }
 
+
     public async Task<Usuario> BuscarNomePeloIdAsync(int idUsuario)
     {
         if (idUsuario <= 0)

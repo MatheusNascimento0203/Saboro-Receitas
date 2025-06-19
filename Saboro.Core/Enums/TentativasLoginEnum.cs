@@ -3,5 +3,5 @@ namespace Saboro.Core.Enums;
 public enum TentativasLoginEnum
 {
     aviso = 1,
-    bloqueio = 2,
+    bloqueio = 3,
 }

@@ -42,6 +42,8 @@
 
 /*! components/toast */
 
+/*! helpers/form */
+
 /*! izitoast */
 
 /*! izitoastcss */
@@ -53,6 +55,10 @@
 /*! uikit */
 
 /*! uikiticonsjs */
+
+/*!*****************************!*\
+  !*** ./src/helpers/form.ts ***!
+  \*****************************/
 
 /*!*******************************!*\
   !*** ./src/styles/index.less ***!

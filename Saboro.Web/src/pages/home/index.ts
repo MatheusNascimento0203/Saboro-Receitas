@@ -6,3 +6,5 @@ import UIkit from "uikit";
 import Icons from "uikiticonsjs";
 
 UIkit.use(Icons);
+
+export { Toast };

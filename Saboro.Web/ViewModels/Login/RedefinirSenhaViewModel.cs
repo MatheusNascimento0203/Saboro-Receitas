@@ -8,18 +8,26 @@ public class RedefinirSenhaViewModel
     public string Email { get; set; }
     public string Senha { get; set; }
     public string SenhaConfirmacao { get; set; }
-    public string Token { get; set; }
+    public int UsuarioUltimaAlteracao { get; set; }
+    public DateTime DataUltimaAlteracao { get; set; }
 
-    public bool IsValidSenha(string senha, INotification notification)
+    public bool IsValid(INotification _notification)
     {
-        if (string.IsNullOrWhiteSpace(senha) || senha.Length < 8)
+
+        if (string.IsNullOrEmpty(Email))
+            _notification.Add("Obrigatório informar o e-mail", NotificationType.Error);
+
+        if (string.IsNullOrEmpty(SenhaConfirmacao))
+            _notification.Add("Obrigatório informar a confirmação da senha", NotificationType.Error);
+
+        if (string.IsNullOrWhiteSpace(Senha) || Senha.Length < 8)
         {
-            notification.Add("Para sua segurança, a senha deve conter pelo menos 8 caracteres, incluindo letras, números e caracteres especiais.", NotificationType.Error);
+            _notification.Add("Para sua segurança, a senha deve conter pelo menos 8 caracteres, incluindo letras, números e caracteres especiais.", NotificationType.Error);
             return false;
         }
 
         bool contemLetra = false, contemDigito = false, contemCaracterEspecial = false;
-        foreach (var c in senha)
+        foreach (var c in Senha)
         {
             if (char.IsLetter(c)) contemLetra = true;
             else if (char.IsDigit(c)) contemDigito = true;
@@ -27,7 +35,10 @@ public class RedefinirSenhaViewModel
 
         }
 
-        notification.Add("Para sua segurança, a senha deve conter pelo menos 8 caracteres, incluindo letras, números e caracteres especiais.", NotificationType.Error);
+        _notification.Add("Para sua segurança, a senha deve conter pelo menos 8 caracteres, incluindo letras, números e caracteres especiais.", NotificationType.Error);
+
+        if (!string.IsNullOrEmpty(Senha) && !Senha.Equals(SenhaConfirmacao))
+            _notification.Add("A senha e a confirmação de senha não conferem", NotificationType.Error);
 
         return contemLetra && contemDigito && contemCaracterEspecial;
     }
