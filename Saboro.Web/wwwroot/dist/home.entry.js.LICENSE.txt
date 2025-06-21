@@ -36,6 +36,8 @@
 
 /*! ../../node_modules/css-loader/dist/runtime/sourceMaps.js */
 
+/*! ../img/icone-adicionar-claro.png */
+
 /*! ../img/icone-adicionar.png */
 
 /*! ../img/icone-duplo-user-receita.png */
@@ -127,6 +129,10 @@
 /*!****************************************!*\
   !*** ./src/img/icone-relogio-info.png ***!
   \****************************************/
+
+/*!*******************************************!*\
+  !*** ./src/img/icone-adicionar-claro.png ***!
+  \*******************************************/
 
 /*!*******************************************!*\
   !*** ./src/img/icone-relogio-receita.png ***!

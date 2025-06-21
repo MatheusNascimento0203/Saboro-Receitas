@@ -8,3 +8,19 @@ import Icons from "uikiticonsjs";
 UIkit.use(Icons);
 
 export { Toast };
+
+interface IHomeModel {
+    urls: {
+        index: string;
+    };
+}
+
+let model: IHomeModel;
+
+export function init(params: IHomeModel) {
+    model = params;
+}
+
+
+
+

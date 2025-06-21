@@ -27,6 +27,8 @@ public static class DependencyInjection
     public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<ICategoriaFavoritaRepository, CategoriaFavoritaRepository>();
+        services.AddScoped<IDificuldadeReceitaRepository, DificuldadeReceitaRepository>();
 
     }
 
