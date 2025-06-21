@@ -10,11 +10,12 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
     {
         builder.ToTable(nameof(Usuario));
 
-        builder.HasKey(n => n.Id);
+        builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Property(x => x.IdCategoriaFavorita);
         builder.Property(x => x.IdNivelCulinario);
-        builder.Property(x => x.IdUsuarioStatus);
+        builder.Property(x => x.IdUsuarioStatus).IsRequired();
         builder.Property(x => x.NomeCompleto).IsRequired().HasMaxLength(100);
         builder.Property(x => x.Email).IsRequired().HasMaxLength(254).HasConversion(x => x.ToLower(), x => x);
         builder.Property(x => x.Senha).IsRequired().HasMaxLength(60);

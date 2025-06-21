@@ -10,7 +10,7 @@ public class CategoriaFavoritaConfiguration : IEntityTypeConfiguration<Categoria
     {
         builder.ToTable(nameof(CategoriaFavorita));
 
-        builder.HasKey(n => n.Id);
+        builder.HasKey(x => x.Id);
 
         builder.Property(x => x.NomeCategoria).IsRequired().HasMaxLength(50);
 

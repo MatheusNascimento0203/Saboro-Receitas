@@ -12,4 +12,6 @@ public class ApplicationDbContext(AppSettings appSettings, ILogger<ApplicationDb
     public DbSet<NivelCulinario> NiveisCulinarios { get; set; }
     public DbSet<CategoriaFavorita> CategoriasFavoritas { get; set; }
     public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<Receita> Receitas { get; set; }
+    public DbSet<DificuldadeReceita> DificuldadesReceitas { get; set; }
 }

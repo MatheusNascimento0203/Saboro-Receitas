@@ -10,7 +10,7 @@ public class NivelCulinarioConfiguration : IEntityTypeConfiguration<NivelCulinar
     {
         builder.ToTable(nameof(NivelCulinario));
 
-        builder.HasKey(n => n.Id);
+        builder.HasKey(x => x.Id);
 
         builder.Property(x => x.NomeNivel).IsRequired().HasMaxLength(50);
 

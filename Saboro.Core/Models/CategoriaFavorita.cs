@@ -6,4 +6,5 @@ public class CategoriaFavorita
     public string NomeCategoria { get; set; }
 
     public ICollection<Usuario> Usuarios { get; set; }
+    public ICollection<Receita> Receitas { get; set; }
 }
