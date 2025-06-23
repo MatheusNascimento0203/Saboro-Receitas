@@ -7,6 +7,7 @@ using Saboro.Core.Interfaces.Services;
 using Saboro.Core.Settings;
 using Saboro.Data.Context;
 using Saboro.Data.Repositories;
+using Saboro.Data.Repositories.Base;
 using Saboro.Web.Services;
 
 namespace Saboro.Web.Settings;
@@ -29,6 +30,7 @@ public static class DependencyInjection
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<ICategoriaFavoritaRepository, CategoriaFavoritaRepository>();
         services.AddScoped<IDificuldadeReceitaRepository, DificuldadeReceitaRepository>();
+        services.AddScoped<IReceitaRepository, ReceitaRepository>();
 
     }
 

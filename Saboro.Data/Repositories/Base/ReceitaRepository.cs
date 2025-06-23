@@ -1,0 +1,17 @@
+using Saboro.Core.Interfaces.Repositories;
+using Saboro.Core.Models;
+using Saboro.Data.Context;
+
+namespace Saboro.Data.Repositories.Base;
+
+public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(dbContext), IReceitaRepository
+{
+    private readonly ApplicationDbContext _dbContext = dbContext;
+
+    public async Task AdicionarAsync(Receita receita)
+    {
+        await _dbContext.AddAsync(receita);
+        await _dbContext.SaveChangesAsync();
+    }
+
+}

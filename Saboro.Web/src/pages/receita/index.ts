@@ -4,6 +4,7 @@ import "styles/index.less";
 import "./index.less";
 import UIkit from "uikit";
 import Icons from "uikiticonsjs";
+import formHelper from "helpers/form";
 
 UIkit.use(Icons);
 
@@ -11,6 +12,7 @@ interface IReceitaModel {
     urls: {
         index: string;
         getCadastro: string;
+        postCadastrarReceita: string;
     };
 }
 
@@ -19,6 +21,24 @@ let model: IReceitaModel;
 export function init(params: IReceitaModel) {
     model = params;
 }
+
+
+
+export function cadastrarReceita(form: HTMLFormElement) {
+    const formData = formHelper.serializeObject(form);
+    $.post({ url: model.urls.postCadastrarReceita, data: formData })
+        .done(() => {
+            Toast.success("Receita cadastrada com sucesso!");
+            setTimeout(() => {
+                window.location.href = model.urls.index;
+            }, 2000);
+        })
+        .fail((erro) => {
+            Toast.error(erro);
+        });
+}
+
+
 
 export const getCadastroReceita = () => {
     $.get(`${model.urls.getCadastro}`, {})
@@ -51,7 +71,7 @@ export function adicionarIngrediente(valor = "") {
                placeholder="Ingrediente ${numero}" 
                value="${valor}"/>
 
-        <button type="button" class="uk-button uk-button-default uk-margin-small-left" 
+        <button type="button" class="uk-margin-small-left botao-excluir-lista" 
                 onclick="saboro.receita.removerIngrediente('ingrediente-${numero}')">
             &times;
         </button>
@@ -112,7 +132,7 @@ export function adicionarPassos(valor = "") {
               placeholder="Passo ${numero}" 
               style="height: 80px;">${valor}</textarea>
 
-        <button type="button" class="uk-button uk-button-default uk-margin-small-left" 
+        <button type="button" class="uk-margin-small-left botao-excluir-lista uk-margin-medium-bottom" 
                 onclick="saboro.receita.removerPasso('passo-${numero}')">
             &times;
         </button>

@@ -1,16 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
+using Saboro.Core.Helpers;
 using Saboro.Core.Interfaces.Helpers;
 using Saboro.Core.Interfaces.Repositories;
 using Saboro.Web.Extensions;
+using Saboro.Web.ViewModels.Receitas;
 
 namespace Saboro.Web.Controllers.Receita;
 
-public class ReceitaController(INotification notification, ICategoriaFavoritaRepository categoriaFavoritaRepository, IDificuldadeReceitaRepository dificuldadeReceitaRepository) : Controller
+[Route("/receita")]
+public class ReceitaController(INotification notification, ICategoriaFavoritaRepository categoriaFavoritaRepository, IDificuldadeReceitaRepository dificuldadeReceitaRepository, IReceitaRepository receitaRepository) : Controller
 {
     private readonly ICategoriaFavoritaRepository _categoriaFavoritaRepository = categoriaFavoritaRepository;
     private readonly IDificuldadeReceitaRepository _dificuldadeReceitaRepository = dificuldadeReceitaRepository;
+    private readonly IReceitaRepository _receitaRepository = receitaRepository;
     private readonly INotification _notification = notification;
-    [HttpGet("receita")]
+    [HttpGet("lista-receita")]
     public IActionResult Index()
     {
         return View("Index");
@@ -22,7 +26,7 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
         return PartialView("_Buscar");
     }
 
-    [HttpGet("cadastrar-receita")]
+    [HttpGet, Route("cadastrar-receita")]
     public async Task<IActionResult> GetCadastrarReceita()
     {
         if (HttpContext.IsAjaxRequest())
@@ -38,5 +42,39 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
         ViewBag.DificuldadeReceita = dificuldades;
 
         return View("Cadastrar");
+    }
+
+    [HttpPost, Route("cadatrar-receita")]
+    public async Task<IActionResult> PostCadastrarReceita(ReceitaCompletaViewModel model)
+    {
+        if (model == null)
+            return BadRequest("Receita inválida.");
+
+        if (model.Receita == null)
+            return BadRequest("Dados da Receita são obrigatórios.");
+
+        if (!model.Receita.IsValid(notification))
+            return BadRequest(_notification.GetAsString());
+
+        foreach (var item in model.Ingredientes)
+        {
+            if (!item.IsValid(notification))
+                return BadRequest(notification.GetAsString());
+        }
+
+        foreach (var item in model.ModosPreparo)
+        {
+            if (!item.IsValid(notification))
+                return BadRequest(notification.GetAsString());
+        }
+
+        var receita = model.Receita.ToModel();
+
+        receita.Ingredientes = model.Ingredientes.Select(x => x.ToModel()).ToList();
+        receita.ModoPreparoReceitas = model.ModosPreparo.Select(x => x.ToModel()).ToList();
+
+        await _receitaRepository.AdicionarAsync(receita);
+
+        return Ok("Receita cadastrada com sucesso!");
     }
 }

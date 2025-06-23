@@ -1,20 +1,23 @@
+@using Saboro.Web.ViewModels.Receitas
+@model ReceitaCompletaViewModel
+
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Cadastrar Receita";
 }
 
-<div class="uk-margin-medium-top container-principal-form">
+<div class="uk-margin-medium-top uk-margin-medium-bottom container-principal-form">
     <div class="uk-margin-small-left uk-margin-small-top">
         <h2>Titulo Receita</h2>
     </div>
-    <form>
+    <form onsubmit="event.preventDefault(); saboro.receita.cadastrarReceita(this)">
         <div class="uk-flex uk-flex-middle gap-input uk-margin-small-left uk-margin-small-right">
             <div class="uk-flex uk-flex-column uk-width-1-2">
                 <label class="uk-form-label uk-text-bold uk-text-small">Titulo da Receita <span
                         class="icone-obrigatorio">*</span></label>
                 <div
                     class="uk-form-controls uk-padding-remove-top uk-padding-remove-left uk-padding-remove-right uk-padding-small ">
-                    <input class="uk-input uk-border-rounded focus-input" type="text" name="TituloReceita"
+                    <input class="uk-input uk-border-rounded focus-input" type="text" name="Receita.TituloReceita"
                         id="titulo-receita" placeholder="Insira o titulo da receita" value="" data-rules="required"
                         maxlength="50" />
                 </div>
@@ -25,13 +28,13 @@
                     <span class="icone-obrigatorio">*</span></label>
                 <div
                     class="uk-form-controls uk-padding-remove-top uk-padding-remove-right uk-padding-small uk-padding-remove-left">
-                    <select class="uk-select uk-border-rounded focus-select" name="IdCategoriaFavorita"
+                    <select class="uk-select uk-border-rounded focus-select" name="Receita.IdCategoriaFavorita"
                         id="eventoMaratona">
                         <option value="0">Selecione a Categoria</option>
                         @foreach (var categoriaFavorita in ViewBag.CategoriaFavorita)
                         {
                             <option value="@categoriaFavorita.Id"
-                                selected="@(categoriaFavorita.Id == Model?.IdCategoriaCorrida ? "selected" : null)">
+                                selected="@(categoriaFavorita.Id == Model?.Receita.IdCategoriaFavorita ? "selected" : null)">
                                 @categoriaFavorita.NomeCategoria</option>
                         }
                     </select>
@@ -44,7 +47,7 @@
                 <span class="icone-obrigatorio">*</span></label>
             <div class="uk-form-controls uk-padding-remove-top uk-padding-remove-right uk-padding-small">
                 <textarea class="uk-border-rounded uk-textarea focus-textarea" id="descricao-receita"
-                    name="DescricaoReceita" rows="5" cols="60"
+                    name="Receita.DescricaoReceita" rows="5" cols="60"
                     placeholder="Insira as condições especiais de saúde..."></textarea>
             </div>
         </div>
@@ -54,7 +57,7 @@
                         class="icone-obrigatorio">*</span></label>
                 <div
                     class="uk-form-controls uk-padding-remove-top uk-padding-remove-left uk-padding-remove-right uk-padding-small ">
-                    <input class="uk-input uk-border-rounded focus-input" type="number" name="TempoPreparo"
+                    <input class="uk-input uk-border-rounded focus-input" type="number" name="Receita.TempoPreparo"
                         id="tempo-preparo" placeholder="Insira o tempo de preparo" value="" data-rules="required"
                         maxlength="50" />
                 </div>
@@ -64,7 +67,7 @@
                         class="icone-obrigatorio">*</span></label>
                 <div
                     class="uk-form-controls uk-padding-remove-top uk-padding-remove-left uk-padding-remove-right uk-padding-small ">
-                    <input class="uk-input uk-border-rounded focus-input" type="number" name="QtdPorcoes"
+                    <input class="uk-input uk-border-rounded focus-input" type="number" name="Receita.QtdPorcoes"
                         id="qtd-porcoes" placeholder="Insira a quantidade de Porções" value="" data-rules="required"
                         maxlength="50" />
                 </div>
@@ -75,13 +78,13 @@
                     <span class="icone-obrigatorio">*</span></label>
                 <div
                     class="uk-form-controls uk-padding-remove-top uk-padding-remove-right uk-padding-small uk-padding-remove-left ">
-                    <select class="uk-select uk-border-rounded focus-select" name="IdDificuldadeReceita"
+                    <select class="uk-select uk-border-rounded focus-select" name="Receita.IdDificuldadeReceita"
                         id="eventoMaratona">
                         <option value="0">Selecione a Dificuldade</option>
                         @foreach (var dificuldadeReceita in ViewBag.DificuldadeReceita)
                         {
                             <option value="@dificuldadeReceita.Id"
-                                selected="@(dificuldadeReceita.Id == Model?.IdCategoriaCorrida ? "selected" : null)">
+                                selected="@(dificuldadeReceita.Id == Model?.Receita.IdDificuldadeReceita ? "selected" : null)">
                                 @dificuldadeReceita.Dificuldade</option>
                         }
                     </select>
@@ -99,9 +102,15 @@
                     Adicionar
                 </button>
             </div>
-
             <div id="lista-ingredientes" class="uk-margin-small-top">
-                <!-- Inputs de ingredientes aparecem aqui -->
+                <div id="ingrediente-1" class="uk-flex uk-flex-middle uk-margin-small linha-ingrediente">
+                    <input class="uk-input uk-border-rounded uk-width-expand" type="text" name="Ingredientes[]"
+                        placeholder="Ingrediente 1" value="" />
+                    <button type="button" class="uk-margin-small-left botao-excluir-lista"
+                        onclick="saboro.receita.removerIngrediente('ingrediente-1')">
+                        <i class="icone-excluir-passos-ingredientes "></i>
+                    </button>
+                </div>
             </div>
         </div>
         <div class="uk-margin-small-left uk-margin-small-right">
@@ -115,11 +124,31 @@
                     Adicionar
                 </button>
             </div>
-
             <div id="lista-passos" class="uk-margin-small-top">
-                <!-- Inputs de ingredientes aparecem aqui -->
+                <div id="passo-1" class="uk-flex uk-flex-middle uk-margin-small linha-passo">
+                    <textarea class="uk-input uk-border-rounded uk-width-expand" type="text" name="Ingredientes[]"
+                        placeholder="passo 1" value="" style="height: 80px;"></Textarea>
+                    <button type="button" class="uk-margin-small-left botao-excluir-lista uk-margin-medium-bottom"
+                        onclick="saboro.receita.removerPasso('passo-1')">
+                        <i class="icone-excluir-passos-ingredientes"></i>
+                    </button>
+                </div>
             </div>
+        </div>
+        <div
+            class="uk-flex uk-margin-small-left uk-margin-small-right uk-margin-small-bottom container-botoes uk-margin-medium-top">
+            <button type="button" onclick="window.history.back()"
+                class="btn-cancelar uk-border-rounded">Cancelar</button>
+            <button class="btn-salvar uk-border-rounded">Salvar Alterações</button>
         </div>
     </form>
 </div>
 <script src="@Url.Content("~/dist/receita.entry.js")" asp-append-version="true"></script>
+<script>
+    saboro.receita.init({
+        urls: {
+            postCadastrarReceita: '@Url.Action("PostCadastrarReceita", "Receita")',
+            getCadastro: '@Url.Action("GetCadastrarReceita", "Receita")',
+        }
+    })
+</script>
