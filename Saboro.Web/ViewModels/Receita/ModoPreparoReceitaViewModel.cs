@@ -22,8 +22,6 @@ public class ModoPreparoReceitaViewModel
 
     public bool IsValid(INotification notification)
     {
-        if (IdReceita <= 0)
-            notification.Add("O preenchimento do campo Receita é obrigatório ", NotificationType.Error);
 
         if (Ordem <= 0)
             notification.Add("O preenchimento do campo Ordem é obrigatório ", NotificationType.Error);

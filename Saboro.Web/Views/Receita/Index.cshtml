@@ -1,54 +1,63 @@
+@using Saboro.Core.Models;
+@model IEnumerable<Receita>;
+
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Receitas";
 }
 
-<div class="uk-margin-medium-top container-principal uk-margin-xlarge-left">
+<div class="uk-margin-medium-top container-principal">
     <div class=" uk-flex uk-flex-middle uk-flex-between">
-    <div>
-        <h3 class="uk-margin-remove-bottom">Minhas Receitas</h3>
-        <p class="uk-margin-remove-top">Gerencie suas receitas culinárias</p>
-    </div>
-    <div>
-        <div class="">
-            <button onclick="saboro.receita.getCadastroReceita()" class="uk-flex uk-flex-middle uk-border-rounded container-botao-adicionar">
-                <i class="icone-adicionar uk-margin-small-right"></i>
-                Nova Receita
-            </button>
+        <div>
+            <h3 class="uk-margin-remove-bottom">Minhas Receitas</h3>
+            <p class="uk-margin-remove-top">Gerencie suas receitas culinárias</p>
+        </div>
+        <div>
+            <div class="">
+                <button onclick="saboro.receita.getCadastroReceita()"
+                    class="uk-flex uk-flex-middle uk-border-rounded container-botao-adicionar">
+                    <i class="icone-adicionar uk-margin-small-right"></i>
+                    Nova Receita
+                </button>
+            </div>
         </div>
     </div>
-</div>
-<div class="uk-inline uk-width-1-3@m uk-flex">
-    <span class="uk-form-icon" uk-icon="icon: search"></span>
-    <input type="search" id="pesquisar-receita" name="pesquisar" class="uk-input uk-border-rounded focus-input"
-        placeholder="Buscar receitas..." />
-</div>
-<div class="container-card-informacoes">
-    <div class="card-informacoes uk-flex uk-flex-middle">
-        <i class="icone-logo-header uk-margin-medium-left"></i>
-        <div class="uk-margin-small-left">
-            <p class="uk-margin-remove-bottom texto-informacoes">Total de Receitas</p>
-            <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">3</p>
-        </div>
+    <div class="uk-inline uk-width-1-3@m uk-flex">
+        <span class="uk-form-icon" uk-icon="icon: search"></span>
+        <input type="search" id="pesquisar-receita" name="pesquisar" class="uk-input uk-border-rounded focus-input"
+            placeholder="Buscar receitas..." />
     </div>
-    <div class="card-informacoes uk-flex uk-flex-middle">
-        <i class="icone-relogio-info uk-margin-medium-left"></i>
-        <div class="uk-margin-small-left">
-            <p class="uk-margin-remove-bottom texto-informacoes">Tempo Médio</p>
-            <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">3</p>
+    @if (Model != null && Model.Any())
+    {
+        var totalReceitas = Model.Count();
+
+        <div class="container-card-informacoes">
+            <div class="card-informacoes uk-flex uk-flex-middle">
+                <i class="icone-logo-header uk-margin-medium-left"></i>
+                <div class="uk-margin-small-left">
+                    <p class="uk-margin-remove-bottom texto-informacoes">Total de Receitas</p>
+                    <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">@totalReceitas</p>
+                </div>
+            </div>
+            <div class="card-informacoes uk-flex uk-flex-middle">
+                <i class="icone-relogio-info uk-margin-medium-left"></i>
+                <div class="uk-margin-small-left">
+                    <p class="uk-margin-remove-bottom texto-informacoes">Tempo Médio</p>
+                    <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">3</p>
+                </div>
+            </div>
+            <div class="card-informacoes uk-flex uk-flex-middle">
+                <i class="icone-duplo-user uk-margin-medium-left"></i>
+                <div class="uk-margin-small-left">
+                    <p class="uk-margin-remove-bottom texto-informacoes">Porções Totais</p>
+                    <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">3</p>
+                </div>
+            </div>
         </div>
+    }
+    <div class="container-card-receitas uk-margin-medium-bottom">
+        @await Html.PartialAsync("_CardResultadoReceita")
     </div>
-    <div class="card-informacoes uk-flex uk-flex-middle">
-        <i class="icone-duplo-user uk-margin-medium-left"></i>
-        <div class="uk-margin-small-left">
-            <p class="uk-margin-remove-bottom texto-informacoes">Porções Totais</p>
-            <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">3</p>
-        </div>
-    </div>
-</div>
-<div class="container-card-receitas uk-margin-medium-bottom">
-    @await Html.PartialAsync("_Buscar")
-</div>
 </div>
 
 <script src="@Url.Content("~/dist/receita.entry.js")" asp-append-version="true"></script>

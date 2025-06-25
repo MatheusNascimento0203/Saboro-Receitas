@@ -103,12 +103,12 @@
                 </button>
             </div>
             <div id="lista-ingredientes" class="uk-margin-small-top">
-                <div id="ingrediente-1" class="uk-flex uk-flex-middle uk-margin-small linha-ingrediente">
-                    <input class="uk-input uk-border-rounded uk-width-expand" type="text" name="Ingredientes[]"
-                        placeholder="Ingrediente 1" value="" />
+                <div id="ingrediente-0" class="uk-flex uk-flex-middle uk-margin-small linha-ingrediente">
+                    <input class="uk-input uk-border-rounded uk-width-expand" type="text"
+                        name="Ingredientes[0].DescricaoIngrediente" placeholder="Ingrediente 1" value="" />
                     <button type="button" class="uk-margin-small-left botao-excluir-lista"
-                        onclick="saboro.receita.removerIngrediente('ingrediente-1')">
-                        <i class="icone-excluir-passos-ingredientes "></i>
+                        onclick="saboro.receita.removerIngrediente('ingrediente-0')">
+                        <i class="icone-excluir-passos-ingredientes"></i>
                     </button>
                 </div>
             </div>
@@ -125,22 +125,24 @@
                 </button>
             </div>
             <div id="lista-passos" class="uk-margin-small-top">
-                <div id="passo-1" class="uk-flex uk-flex-middle uk-margin-small linha-passo">
-                    <textarea class="uk-input uk-border-rounded uk-width-expand" type="text" name="Ingredientes[]"
-                        placeholder="passo 1" value="" style="height: 80px;"></Textarea>
+                <div id="passo-0" class="uk-flex uk-flex-middle uk-margin-small linha-passo">
+                    <div class="uk-width-expand">
+                        <textarea class="uk-textarea uk-border-rounded uk-width-1-1" name="ModosPreparo[0].Descricao"
+                            placeholder="Passo 1" style="height: 80px;"></textarea>
+                        <input type="hidden" name="ModosPreparo[0].Ordem" value="1" />
+                    </div>
                     <button type="button" class="uk-margin-small-left botao-excluir-lista uk-margin-medium-bottom"
-                        onclick="saboro.receita.removerPasso('passo-1')">
+                        onclick="saboro.receita.removerPasso('passo-0')">
                         <i class="icone-excluir-passos-ingredientes"></i>
                     </button>
                 </div>
             </div>
-        </div>
-        <div
-            class="uk-flex uk-margin-small-left uk-margin-small-right uk-margin-small-bottom container-botoes uk-margin-medium-top">
-            <button type="button" onclick="window.history.back()"
-                class="btn-cancelar uk-border-rounded">Cancelar</button>
-            <button class="btn-salvar uk-border-rounded">Salvar Alterações</button>
-        </div>
+            <div
+                class="uk-flex uk-margin-small-left uk-margin-small-right uk-margin-small-bottom container-botoes uk-margin-medium-top">
+                <button type="button" onclick="window.history.back()"
+                    class="btn-cancelar uk-border-rounded">Cancelar</button>
+                <button class="btn-salvar uk-border-rounded">Salvar Alterações</button>
+            </div>
     </form>
 </div>
 <script src="@Url.Content("~/dist/receita.entry.js")" asp-append-version="true"></script>

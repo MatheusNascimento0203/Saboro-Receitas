@@ -15,15 +15,19 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
     private readonly IReceitaRepository _receitaRepository = receitaRepository;
     private readonly INotification _notification = notification;
     [HttpGet("lista-receita")]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View("Index");
+        var receitas = await _receitaRepository.BuscarReceitaAsync();
+        var receitasOrdenadas = receitas.OrderBy(r => r.TituloReceita).ToList();
+        return View("Index", receitasOrdenadas);
     }
 
     [HttpGet("buscar-receita")]
-    public IActionResult BuscarReceita()
+    public async Task<IActionResult> BuscarReceita()
     {
-        return PartialView("_Buscar");
+        var receitas = await _receitaRepository.BuscarReceitaAsync();
+        var receitasOrdenadas = receitas.OrderBy(r => r.TituloReceita).ToList();
+        return PartialView("_CardResultadoReceita", receitasOrdenadas);
     }
 
     [HttpGet, Route("cadastrar-receita")]
@@ -50,7 +54,12 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
         if (model == null)
             return BadRequest("Receita inválida.");
 
-        if (model.Receita == null)
+        var usuarioLogado = HttpContext.GetUser();
+        if (usuarioLogado == null)
+            return BadRequest("Usuário não autenticado.");
+
+
+        if (model.Receita == null || model.Ingredientes == null || model.ModosPreparo == null)
             return BadRequest("Dados da Receita são obrigatórios.");
 
         if (!model.Receita.IsValid(notification))
@@ -68,6 +77,7 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
                 return BadRequest(notification.GetAsString());
         }
 
+        model.Receita.IdUsuario = usuarioLogado.Id;
         var receita = model.Receita.ToModel();
 
         receita.Ingredientes = model.Ingredientes.Select(x => x.ToModel()).ToList();

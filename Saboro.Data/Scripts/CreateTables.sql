@@ -36,7 +36,9 @@ CREATE TABLE "Receita" (
     FOREIGN KEY ("IdCategoriaFavorita") REFERENCES "CategoriaFavorita"("Id")
 );
 
-CREATE TABLE "ModoPreparo" (
+DROP TABLE IF EXISTS "ModoPreparoReceita";
+
+CREATE TABLE "ModoPreparoReceita" (
     "Id" SERIAL PRIMARY KEY,
     "IdReceita" INT NOT NULL,
     "Ordem" INT NOT NULL,
@@ -48,11 +50,9 @@ CREATE TABLE "ModoPreparo" (
 CREATE TABLE "IngredienteReceita" (
     "Id" SERIAL PRIMARY KEY,
     "IdReceita" INT NOT NULL,
-    "DescricaoIngrediente" INT NOT NULL,
+    "DescricaoIngrediente" VARCHAR(200) NOT NULL,
     FOREIGN KEY ("IdReceita") REFERENCES "Receita"("Id")
 );
-
-
 
 CREATE TABLE "Usuario" (
     "Id" SERIAL PRIMARY KEY,

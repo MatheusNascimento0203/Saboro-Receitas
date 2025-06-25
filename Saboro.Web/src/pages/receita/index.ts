@@ -1,5 +1,6 @@
 import $ from "jquery";
 import Toast from "components/toast";
+import Loading from "components/loading";
 import "styles/index.less";
 import "./index.less";
 import UIkit from "uikit";
@@ -22,23 +23,24 @@ export function init(params: IReceitaModel) {
     model = params;
 }
 
-
-
 export function cadastrarReceita(form: HTMLFormElement) {
     const formData = formHelper.serializeObject(form);
     $.post({ url: model.urls.postCadastrarReceita, data: formData })
         .done(() => {
+            Loading.show();
             Toast.success("Receita cadastrada com sucesso!");
             setTimeout(() => {
-                window.location.href = model.urls.index;
+                window.location.reload();
             }, 2000);
         })
         .fail((erro) => {
+            Loading.hide();
             Toast.error(erro);
+        })
+        .always(() => {
+            Loading.hide();
         });
 }
-
-
 
 export const getCadastroReceita = () => {
     $.get(`${model.urls.getCadastro}`, {})
@@ -57,22 +59,21 @@ export function adicionarIngrediente(valor = "") {
     const quantidadeLinhas =
         container.querySelectorAll(".linha-ingrediente").length;
 
-    // Próximo número = quantidade atual + 1
-    const numero = quantidadeLinhas + 1;
+    const index = quantidadeLinhas;
 
     const div = document.createElement("div");
     div.className = "uk-flex uk-flex-middle uk-margin-small linha-ingrediente";
-    div.id = `ingrediente-${numero}`;
+    div.id = `ingrediente-${index}`;
 
     div.innerHTML = `
         <input class="uk-input uk-border-rounded uk-width-expand" 
                type="text" 
-               name="Ingredientes[]" 
-               placeholder="Ingrediente ${numero}" 
+               name="Ingredientes[${index}].DescricaoIngrediente" 
+               placeholder="Ingrediente ${index + 1}" 
                value="${valor}"/>
 
         <button type="button" class="uk-margin-small-left botao-excluir-lista" 
-                onclick="saboro.receita.removerIngrediente('ingrediente-${numero}')">
+                onclick="saboro.receita.removerIngrediente('ingrediente-${index}')">
             &times;
         </button>
     `;
@@ -116,24 +117,26 @@ function atualizarNumeracaoIngredientes() {
 export function adicionarPassos(valor = "") {
     const container = document.getElementById("lista-passos");
 
-    // Conta quantas linhas existem no momento
     const quantidadeLinhas = container.querySelectorAll(".linha-passo").length;
-
-    // Próximo número = quantidade atual + 1
-    const numero = quantidadeLinhas + 1;
+    const index = quantidadeLinhas;
 
     const div = document.createElement("div");
     div.className = "uk-flex uk-flex-middle uk-margin-small linha-passo";
-    div.id = `passo-${numero}`;
+    div.id = `passo-${index}`;
 
     div.innerHTML = `
-    <textarea class="uk-textarea uk-border-rounded uk-width-expand" 
-              name="Passos[]" 
-              placeholder="Passo ${numero}" 
-              style="height: 80px;">${valor}</textarea>
+        <div class="uk-width-expand">
+            <textarea class="uk-textarea uk-border-rounded uk-width-1-1" 
+                      name="ModosPreparo[${index}].Descricao" 
+                      placeholder="Passo ${index + 1}" 
+                      style="height: 80px;">${valor}</textarea>
+            <input type="hidden" name="ModosPreparo[${index}].Ordem" value="${
+        index + 1
+    }" />
+        </div>
 
         <button type="button" class="uk-margin-small-left botao-excluir-lista uk-margin-medium-bottom" 
-                onclick="saboro.receita.removerPasso('passo-${numero}')">
+                onclick="saboro.receita.removerPasso('passo-${index}')">
             &times;
         </button>
     `;

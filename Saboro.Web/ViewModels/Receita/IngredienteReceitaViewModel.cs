@@ -20,9 +20,6 @@ public class IngredienteReceitaViewModel
 
     public bool IsValid(INotification notification)
     {
-        if (IdReceita <= 0)
-            notification.Add("O preenchimento do campo Receita é obrigatório ", NotificationType.Error);
-
         if (string.IsNullOrEmpty(DescricaoIngrediente))
             notification.Add("O preenchimento do campo Ingrediente é obrigatório ", NotificationType.Error);
 
