@@ -40,6 +40,8 @@
 
 /*! ../img/icone-adicionar.png */
 
+/*! ../img/icone-alerta.png */
+
 /*! ../img/icone-duplo-user-receita.png */
 
 /*! ../img/icone-duplo-user.png */
@@ -99,6 +101,10 @@
 /*!*********************************!*\
   !*** ./src/components/toast.ts ***!
   \*********************************/
+
+/*!**********************************!*\
+  !*** ./src/img/icone-alerta.png ***!
+  \**********************************/
 
 /*!**********************************!*\
   !*** ./src/img/icone-editar.png ***!

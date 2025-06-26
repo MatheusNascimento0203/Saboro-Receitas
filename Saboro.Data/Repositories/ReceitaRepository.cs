@@ -25,4 +25,26 @@ public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(
             .ToListAsync();
     }
 
+    public async Task<Receita> BuscarReceitaPorIdAsync(int id)
+    {
+        return await _dbContext.Receitas
+            .Include(r => r.CategoriaFavorita)
+            .Include(r => r.DificuldadeReceita)
+            .Include(r => r.Ingredientes)
+            .Include(r => r.ModoPreparoReceitas)
+            .FirstOrDefaultAsync(r => r.Id == id);
+    }
+
+    public async Task RemoverAsync(int id)
+    {
+        var receita = await BuscarReceitaPorIdAsync(id);
+
+        if (receita == null)
+            throw new Exception("Receita não encontrada");
+
+        _dbContext.Remove(receita);
+        await _dbContext.SaveChangesAsync();
+
+    }
+
 }

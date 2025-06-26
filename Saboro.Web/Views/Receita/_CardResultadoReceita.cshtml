@@ -12,12 +12,12 @@
         var dificuldade = item.DificuldadeReceita?.Dificuldade?.ToLower();
         var classeCor = dificuldade switch
         {
-            "iniciante" => "badge-facil",
-            "intermediário" => "badge-medio",
-            "avançado" => "badge-dificil",
-            _ => "badge-facil"
+            "fácil" => "badge-facil",
+            "médio" => "badge-medio",
+            "difícil" => "badge-dificil",
+            _ => "badge-fácil"
         };
-        <div class="card-receitas">
+        <div id="receita-{@item.Id}" class="card-receitas">
             <div
                 class="uk-margin-medium-left uk-flex uk-flex-between uk-flex-middle uk-margin-medium-right uk-margin-medium-top">
                 <p class="titulo-receita uk-margin-remove-bottom">@item.TituloReceita</p>
@@ -50,10 +50,42 @@
                 </button>
                 <button class="uk-flex uk-flex-middle uk-flex-center container-botao-editar-excluir uk-border-rounded"><i
                         class="icone-editar"></i></button>
-                <button class="uk-flex uk-flex-middle uk-flex-center container-botao-editar-excluir uk-border-rounded"><i
+                <button type="button"
+                    onclick="saboro.receita.excluirReceita('@Url.Action("DeleteReceita", "Receita", new { id = @item.Id })', @item.Id)"
+                    class="uk-flex uk-flex-middle uk-flex-center container-botao-editar-excluir uk-border-rounded"><i
                         class="icone-excluir"></i></button>
+            </div>
+            <div id="modal-confirmacao-exclusao-receita-@item.Id" uk-modal="esc-close: false; bg-close: false;">
+                <div class="uk-modal-dialog uk-modal-body uk-border-rounded uk-margin-auto-vertical">
+                    <button class="uk-modal-close-default uk-text-bold text-black" type="button" uk-close></button>
+                    <div class="uk-flex uk-flex-middle">
+                        <i class="icone-alerta uk-margin-right"></i>
+                        <div class="">
+                            <h4 class="uk-text-bold uk-margin-remove">Tem certeza que deseja excluir este registro?</h4>
+                            <p class="uk-text-muted uk-margin-remove">Esta ação não pode ser desfeita!</p>
+                        </div>
+                    </div>
+                    <div class="uk-flex uk-flex-right uk-margin-small-top">
+                        <button id="cancelar-exclusao-receita-@item.Id"
+                            class="tamanho-altura-padrao bt-cancelar uk-button uk-button-link uk-padding-small uk-margin-small-right uk-padding-remove-top uk-padding-remove-bottom uk-flex uk-flex-middle uk-border-rounded"
+                            type="button">Cancelar</button>
+                        <button id="confirmar-exclusao-receita-@item.Id"
+                            class="tamanho-altura-padrao btn-salvar uk-button uk-button-link uk-padding-small uk-padding-remove-top uk-padding-remove-bottom uk-background-primary uk-flex uk-flex-middle uk-border-rounded"
+                            type="button">Confirmar
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     }
 
 }
+
+<script src="@Url.Content("~/dist/receita.entry.js")" asp-append-version="true"></script>
+<script>
+    saboro.receita.init({
+        urls: {
+            index: '@Url.Action("Index", "Receita")'
+        }
+    })
+</script>

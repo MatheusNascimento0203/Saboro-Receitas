@@ -30,6 +30,8 @@
     @if (Model != null && Model.Any())
     {
         var totalReceitas = Model.Count();
+        var tempoMedio = (int)Model.Average(r => r.TempoPreparo);
+        var totalPorcoes = Model.Sum(r => r.QtdPorcoes);
 
         <div class="container-card-informacoes">
             <div class="card-informacoes uk-flex uk-flex-middle">
@@ -43,14 +45,14 @@
                 <i class="icone-relogio-info uk-margin-medium-left"></i>
                 <div class="uk-margin-small-left">
                     <p class="uk-margin-remove-bottom texto-informacoes">Tempo Médio</p>
-                    <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">3</p>
+                    <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">@tempoMedio min</p>
                 </div>
             </div>
             <div class="card-informacoes uk-flex uk-flex-middle">
                 <i class="icone-duplo-user uk-margin-medium-left"></i>
                 <div class="uk-margin-small-left">
                     <p class="uk-margin-remove-bottom texto-informacoes">Porções Totais</p>
-                    <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">3</p>
+                    <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">@totalPorcoes</p>
                 </div>
             </div>
         </div>
@@ -65,6 +67,7 @@
     saboro.receita.init({
         urls: {
             getCadastro: '@Url.Action("GetCadastrarReceita", "Receita")',
+            index: '@Url.Action("Index", "Receita")'
         }
     })
 </script>
