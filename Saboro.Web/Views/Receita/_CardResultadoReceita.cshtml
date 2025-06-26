@@ -44,7 +44,8 @@
             </div>
             <div
                 class="uk-margin-small-top uk-margin-medium-left uk-flex container-botoes-receita uk-margin-medium-right uk-margin-small-bottom">
-                <button href="" class=" uk-flex uk-flex-middle uk-flex-center uk-border-rounded container-botao-visualizar">
+                <button type="button" onclick="saboro.receita.visualizarReceita(@item.Id)"
+                    class=" uk-flex uk-flex-middle uk-flex-center uk-border-rounded container-botao-visualizar">
                     <i class="icone-visualizar-receita uk-margin-small-right"></i>
                     Ver
                 </button>
@@ -55,28 +56,94 @@
                     class="uk-flex uk-flex-middle uk-flex-center container-botao-editar-excluir uk-border-rounded"><i
                         class="icone-excluir"></i></button>
             </div>
-            <div id="modal-confirmacao-exclusao-receita-@item.Id" uk-modal="esc-close: false; bg-close: false;">
-                <div class="uk-modal-dialog uk-modal-body uk-border-rounded uk-margin-auto-vertical">
+            @* MODAL VISUALIZAÇÃO DA RECEITA *@
+            <div id="modal-visualizar-receita-@item.Id" uk-modal="esc-close: false; bg-close: false;">
+                <div class="uk-modal-dialog uk-modal-body uk-border-rounded uk-margin-auto-vertical modal-visualizar-receita">
                     <button class="uk-modal-close-default uk-text-bold text-black" type="button" uk-close></button>
-                    <div class="uk-flex uk-flex-middle">
-                        <i class="icone-alerta uk-margin-right"></i>
-                        <div class="">
-                            <h4 class="uk-text-bold uk-margin-remove">Tem certeza que deseja excluir este registro?</h4>
-                            <p class="uk-text-muted uk-margin-remove">Esta ação não pode ser desfeita!</p>
+                    <div class="uk-flex uk-flex-column">
+                        <div
+                            class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top gap-modal-exclusao">
+                            <h4 class="uk-margin-remove-top uk-margin-remove-bottom">@item.TituloReceita</h4>
+                            <p class="uk-margin-remove-top uk-margin-remove-bottom">@item.DescricaoReceita</p>
+                            <div class="uk-flex uk-flex-middle">
+                                <div class="uk-flex uk-flex-middle">
+                                    <i class="icone-relogio-receita"></i>
+                                    <p class="uk-margin-remove-bottom uk-margin-remove-top font-media">
+                                        @item.TempoPreparo
+                                        min</p>
+                                </div>
+                                <div class="uk-flex uk-flex-middle uk-margin-small-left">
+                                    <i class="icone-duplo-user-receita"></i>
+                                    <p class="uk-margin-remove-bottom uk-margin-remove-top font-media">@item.QtdPorcoes
+                                        porções</p>
+                                </div>
+                                <div class="badge @classeCor uk-margin-small-left">
+                                    <p class="uk-margin-remove-bottom">@item.DificuldadeReceita?.Dificuldade</p>
+                                </div>
+                                <div class="badge-tipo-receita uk-margin-small-left ">
+                                    <p class="uk-margin-remove-top uk-margin-remove-bottom">
+                                        @item.CategoriaFavorita.NomeCategoria</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="uk-flex uk-flex-right uk-margin-small-top">
-                        <button id="cancelar-exclusao-receita-@item.Id"
-                            class="tamanho-altura-padrao bt-cancelar uk-button uk-button-link uk-padding-small uk-margin-small-right uk-padding-remove-top uk-padding-remove-bottom uk-flex uk-flex-middle uk-border-rounded"
-                            type="button">Cancelar</button>
-                        <button id="confirmar-exclusao-receita-@item.Id"
-                            class="tamanho-altura-padrao btn-salvar uk-button uk-button-link uk-padding-small uk-padding-remove-top uk-padding-remove-bottom uk-background-primary uk-flex uk-flex-middle uk-border-rounded"
-                            type="button">Confirmar
-                        </button>
+                        <div class="uk-flex uk-flex-between gap-modal-exclusao ">
+                            <div
+                                class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top gap-modal-exclusao coluna-ingredientes-modos-preparo">
+                                <h4 class="uk-margin-remove-top uk-margin-remove-bottom uk-bold">Ingredientes</h4>
+                                @foreach (var ingrediente in item.Ingredientes)
+                                {
+                                    <div class="uk-flex uk-flex-middle">
+                                        <div class="ponto"></div>
+                                        <p class="uk-margin-small-left uk-margin-remove-top uk-margin-remove-bottom">
+                                            @ingrediente.DescricaoIngrediente</p>
+                                    </div>
+                                }
+                            </div>
+                            <div
+                                class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top gap-modal-exclusao coluna-ingredientes-modos-preparo">
+                                <h4 class="uk-margin-remove-top uk-margin-remove-bottom uk-bold">Modo de Preparo</h4>
+                                @foreach (var modoPreparo in item.ModoPreparoReceitas)
+                                {
+                                    <div class="uk-flex uk-flex-middle">
+                                        <div class="passo uk-flex uk-flex-middle uk-flex-center">
+                                            <p class="uk-margin-remove-top uk-margin-remove-bottom ordem-receita">@modoPreparo.Ordem</p>
+                                        </div>
+                                        <p class="uk-margin-small-left uk-margin-remove-top uk-margin-remove-bottom">
+                                            @modoPreparo.Descricao</p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        @* MODAL CONFIRMAR EXCLUSÃO *@
+        <div id="modal-confirmacao-exclusao-receita-@item.Id" uk-modal="esc-close: false; bg-close: false;">
+            <div class="uk-modal-dialog uk-modal-body uk-border-rounded uk-margin-auto-vertical modal-confirmar-exclusao">
+                <button class="uk-modal-close-default uk-text-bold text-black" type="button" uk-close></button>
+                <div class="uk-flex uk-flex-middle">
+                    <i class="icone-alerta uk-margin-right"></i>
+                    <div class="uk-flex uk-flex-column uk-flex-middle uk-flex-center  gap-modal-exclusao">
+                        <h4 class="uk-text-bold uk-margin-remove">Tem certeza que deseja excluir a receita?</h4>
+                        <p class="uk-margin-remove-top uk-margin-remove-bottom titulo-receita-modal-confirmacao-exclusao">
+                            (@item.TituloReceita)</p>
+                        <p class="uk-text-danger uk-margin-remove">Esta ação não pode ser desfeita!</p>
+                    </div>
+                </div>
+                <div class="uk-flex uk-flex-center uk-margin-small-top">
+                    <button id="cancelar-exclusao-receita-@item.Id"
+                        class="tamanho-altura-padrao btn-cancelar-exclusao uk-text-center uk-padding-small uk-margin-small-right uk-padding-remove-top uk-padding-remove-bottom uk-flex uk-flex-middle uk-flex-center uk-border-rounded"
+                        type="button">Cancelar</button>
+                    <button id="confirmar-exclusao-receita-@item.Id"
+                        class="tamanho-altura-padrao btn-confirmar-exclusao uk-padding-small uk-padding-remove-top uk-padding-remove-bottom uk-background-primary uk-flex uk-flex-middle uk-flex-center uk-border-rounded"
+                        type="button">Confirmar
+                    </button>
+                </div>
+            </div>
+        </div>
+
     }
 
 }
@@ -85,7 +152,8 @@
 <script>
     saboro.receita.init({
         urls: {
-            index: '@Url.Action("Index", "Receita")'
+            index: '@Url.Action("Index", "Receita")',
+            removerReceita: '@Url.Action("DeleteReceita", "Receita")'
         }
     })
 </script>

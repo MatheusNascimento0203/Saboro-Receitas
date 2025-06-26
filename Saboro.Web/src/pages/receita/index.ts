@@ -180,29 +180,36 @@ function atualizarNumeracaoPassos() {
 
 export function excluirReceita(url: string, id: number) {
     UIkit.modal(`#modal-confirmacao-exclusao-receita-${id}`).show();
-    console.log(url);
     $(`#confirmar-exclusao-receita-${id}`)
-        .off('click')
-        .on('click', () => {
+        .off("click")
+        .on("click", () => {
             Loading.show();
             $.post(url)
                 .done(() => {
                     $(`#evento-maratona-${id}`).remove();
-                    Toast.success('Evento excluído com sucesso!');
-                    UIkit.modal(`#modal-confirmacao-exclusao-receita-${id}`).hide();
-                    window.location.reload();         
+                    Toast.success("Evento excluído com sucesso!");
+                    UIkit.modal(
+                        `#modal-confirmacao-exclusao-receita-${id}`
+                    ).hide();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
                 })
                 .fail((erro) => {
                     Toast.error(erro);
                 })
                 .always(() => {
                     Loading.hide();
-                });                
+                });
         });
-    
+
     $(`#cancelar-exclusao-receita-${id}`)
-        .off('click')
-        .on('click', () => {
+        .off("click")
+        .on("click", () => {
             UIkit.modal(`#modal-confirmacao-exclusao-receita-${id}`).hide();
         });
+}
+
+export function visualizarReceita(id: number) {
+    UIkit.modal(`#modal-visualizar-receita-${id}`).show();
 }

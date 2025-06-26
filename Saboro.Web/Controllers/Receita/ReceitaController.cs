@@ -88,10 +88,10 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
         return Ok("Receita cadastrada com sucesso!");
     }
 
-    [HttpPost("deletar/{id}")]
+    [HttpPost, Route("deletar/{id}")]
     public async Task<IActionResult> DeleteReceitaAsync(int id)
     {
-        var receita = _receitaRepository.BuscarReceitaPorIdAsync(id);
+        var receita = await _receitaRepository.BuscarReceitaPorIdAsync(id);
 
         if (receita == null)
             return BadRequest("Receita não encontrada.");

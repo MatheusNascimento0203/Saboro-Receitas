@@ -92,18 +92,18 @@
 }
 
 .badge-facil {
-    background-color: #DCFCE7;
+    background-color: #dcfce7;
     color: #166534;
 }
 
 .badge-medio {
-    background-color: #FEF9C3;
-    color: #854D0E;
+    background-color: #fef9c3;
+    color: #854d0e;
 }
 
 .badge-dificil {
-    background-color: #FEE2E2;
-    color: #991B1B;
+    background-color: #fee2e2;
+    color: #991b1b;
 }
 
 .badge-tipo-receita {
@@ -190,12 +190,33 @@
     cursor: pointer !important;
 }
 
-.btn-cancelar:hover {
+.btn-cancelar:hover,
+.btn-cancelar-exclusao:hover {
     background-color: #f4f4f5 !important;
 }
 
-.btn-salvar:hover {
+.btn-salvar:hover,
+.btn-confirmar-exclusao:hover {
     background-color: #c94a09 !important;
+}
+
+.btn-cancelar-exclusao {
+    width: 112px;
+    height: 40px;
+    background-color: var(--cor-branco) !important;
+    border: 1px solid #e4e4e7 !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+}
+
+.btn-confirmar-exclusao {
+    width: 112px;
+    height: 40px;
+    color: #f4f4f5;
+    background-color: var(--cor-laranja) !important;
+    border: 1px solid var(--cor-laranja) !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
 }
 
 .botao-excluir-lista {
@@ -213,4 +234,47 @@
 
 .tamanho-altura-padrao {
     height: 40px;
-  }
+}
+
+.modal-confirmar-exclusao {
+    border: 2px solid var(--cor-laranja) !important;
+}
+
+.titulo-receita-modal-confirmacao-exclusao {
+    font-weight: 600 !important;
+    font-size: 16px !important;
+}
+
+.gap-modal-exclusao {
+    gap: 8px !important;
+}
+
+.modal-visualizar-receita {
+    border: 2px solid var(--cor-laranja) !important;
+    min-width: 832px !important;
+} 
+
+.coluna-ingredientes-modos-preparo {
+    width: 50% !important;
+    min-height: 400px !important;
+}
+
+.ponto{
+    width: 8px;
+    height: 8px;
+    background-color: var(--cor-laranja);
+    border-radius: 50%;
+}
+
+.passo{
+    width: 24px;
+    height: 24px;
+    background-color: var(--cor-laranja);
+    border-radius: 50%;
+}
+
+.ordem-receita{
+    font-size: 14px;
+    color: var(--cor-branco);
+    font-weight: 600;
+}
