@@ -62,7 +62,7 @@
                     <button class="uk-modal-close-default uk-text-bold text-black" type="button" uk-close></button>
                     <div class="uk-flex uk-flex-column">
                         <div
-                            class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top gap-modal-exclusao">
+                            class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top gap-modal-exclusao uk-border-rounded">
                             <h4 class="uk-margin-remove-top uk-margin-remove-bottom">@item.TituloReceita</h4>
                             <p class="uk-margin-remove-top uk-margin-remove-bottom">@item.DescricaoReceita</p>
                             <div class="uk-flex uk-flex-middle">
@@ -86,9 +86,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="uk-flex uk-flex-between gap-modal-exclusao ">
+                        <div class="uk-flex uk-flex-between gap-modal-exclusao">
                             <div
-                                class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top gap-modal-exclusao coluna-ingredientes-modos-preparo">
+                                class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top gap-modal-exclusao coluna-ingredientes-modos-preparo uk-border-rounded">
                                 <h4 class="uk-margin-remove-top uk-margin-remove-bottom uk-bold">Ingredientes</h4>
                                 @foreach (var ingrediente in item.Ingredientes)
                                 {
@@ -100,11 +100,11 @@
                                 }
                             </div>
                             <div
-                                class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top gap-modal-exclusao coluna-ingredientes-modos-preparo">
+                                class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top gap-modal-exclusao coluna-ingredientes-modos-preparo uk-border-rounded">
                                 <h4 class="uk-margin-remove-top uk-margin-remove-bottom uk-bold">Modo de Preparo</h4>
                                 @foreach (var modoPreparo in item.ModoPreparoReceitas)
                                 {
-                                    <div class="uk-flex uk-flex-middle">
+                                    <div class="uk-flex">
                                         <div class="passo uk-flex uk-flex-middle uk-flex-center">
                                             <p class="uk-margin-remove-top uk-margin-remove-bottom ordem-receita">@modoPreparo.Ordem</p>
                                         </div>
@@ -112,6 +112,17 @@
                                             @modoPreparo.Descricao</p>
                                     </div>
                                 }
+                            </div>
+                        </div>
+                        <div class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top uk-border-rounded">
+                            <h4 class="uk-margin-remove-top uk-margin-remove-bottom uk-bold">Dicas do Chef</h4>
+                            <div class="uk-flex dica-chef uk-padding-small uk-margin-small-top uk-border-rounded">
+                                <p class="destaque-dica uk-margin-remove-top uk-margin-remove-bottom">Dica:</p>
+                                <p class="uk-margin-remove-top uk-margin-remove-bottom">
+                                    Para uma lasanha ainda mais saborosa, deixe descansar na geladeira por algumas horas antes
+                                    de assar. Isso permite que os sabores se misturem melhor. Você também pode preparar no dia
+                                    anterior e assar no dia seguinte!
+                                </p>
                             </div>
                         </div>
                     </div>
