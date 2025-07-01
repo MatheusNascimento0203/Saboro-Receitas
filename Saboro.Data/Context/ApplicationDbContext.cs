@@ -14,4 +14,6 @@ public class ApplicationDbContext(AppSettings appSettings, ILogger<ApplicationDb
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<Receita> Receitas { get; set; }
     public DbSet<DificuldadeReceita> DificuldadesReceitas { get; set; }
+    public DbSet<ModoPreparoReceita> ModosPreparoReceitas { get; set; }
+    public DbSet<IngredienteReceita> Ingredientes { get; set; }
 }

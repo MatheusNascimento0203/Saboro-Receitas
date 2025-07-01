@@ -48,7 +48,7 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
         return View("Cadastrar");
     }
 
-    [HttpPost, Route("cadatrar-receita")]
+    [HttpPost, Route("cadastrar-receita")]
     public async Task<IActionResult> PostCadastrarReceita(ReceitaCompletaViewModel model)
     {
         if (model == null)
@@ -98,5 +98,16 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
 
         await _receitaRepository.RemoverAsync(id);
         return Ok("Receita removida com sucesso!");
+    }
+
+    [HttpGet, Route("editar/{id}")]
+    public async Task<IActionResult> GetEditarReceitaAsync(int id)
+    {
+        var receita = await _receitaRepository.BuscarReceitaPorIdAsync(id);
+        
+        if (receita == null)
+            return BadRequest("Receita nao encontrada.");
+
+        return View("Editar", receita);
     }
 }

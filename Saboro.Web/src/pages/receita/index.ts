@@ -15,6 +15,7 @@ interface IReceitaModel {
         getCadastro: string;
         postCadastrarReceita: string;
         removerReceita: string;
+        getEditarReceita: string;
     };
 }
 
@@ -52,6 +53,7 @@ export const getCadastroReceita = () => {
             Toast.error(response.responseText);
         });
 };
+
 
 export function adicionarIngrediente(valor = "") {
     const container = document.getElementById("lista-ingredientes");

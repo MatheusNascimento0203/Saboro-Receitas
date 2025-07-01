@@ -1,0 +1,16 @@
+@{
+    Layout = null;
+    ViewData["Title"] = "Editar Receita";
+}
+
+<h2>CHEGOU</h2>
+
+
+<script src="@Url.Content("~/dist/receita.entry.js")" asp-append-version="true"></script>
+<script>
+    saboro.receita.init({
+        urls: {
+            getEditarReceita: '@Url.Action("GetEditarReceita", "Receita")'
+        }
+    })
+</script>

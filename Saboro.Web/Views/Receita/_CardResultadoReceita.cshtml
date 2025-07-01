@@ -49,8 +49,10 @@
                     <i class="icone-visualizar-receita uk-margin-small-right"></i>
                     Ver
                 </button>
-                <button class="uk-flex uk-flex-middle uk-flex-center container-botao-editar-excluir uk-border-rounded"><i
+                <a href='@Url.Action("GetEditarReceita", "Receita", new {id = @item.Id})'>
+                <button type="button" onclick="saboro.receita.getEditarReceita(@item.Id)" class="uk-flex uk-flex-middle uk-flex-center container-botao-editar-excluir uk-border-rounded"><i
                         class="icone-editar"></i></button>
+                </a>
                 <button type="button"
                     onclick="saboro.receita.excluirReceita('@Url.Action("DeleteReceita", "Receita", new { id = @item.Id })', @item.Id)"
                     class="uk-flex uk-flex-middle uk-flex-center container-botao-editar-excluir uk-border-rounded"><i
@@ -158,13 +160,3 @@
     }
 
 }
-
-<script src="@Url.Content("~/dist/receita.entry.js")" asp-append-version="true"></script>
-<script>
-    saboro.receita.init({
-        urls: {
-            index: '@Url.Action("Index", "Receita")',
-            removerReceita: '@Url.Action("DeleteReceita", "Receita")'
-        }
-    })
-</script>

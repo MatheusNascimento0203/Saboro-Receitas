@@ -7,6 +7,6 @@ public interface IReceitaRepository
     Task<IEnumerable<Receita>> BuscarReceitaAsync();
     Task<Receita> BuscarReceitaPorIdAsync(int id);
     Task AdicionarAsync(Receita receita);
-    // Task AtualizarAsync(int id, object modifiedFields);
+    Task AtualizarAsync(int id, Receita receita);
     Task RemoverAsync(int id);
 }
