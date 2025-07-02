@@ -72,6 +72,11 @@
 .descricao-receita {
     max-width: 309px;
     font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* número de linhas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .badge {
@@ -256,37 +261,37 @@
 .modal-visualizar-receita {
     border: 2px solid var(--cor-laranja) !important;
     min-width: 832px !important;
-} 
+}
 
 .coluna-ingredientes-modos-preparo {
     width: 50% !important;
     min-height: 400px !important;
 }
 
-.ponto{
+.ponto {
     width: 8px;
     height: 8px;
     background-color: var(--cor-laranja);
     border-radius: 50%;
 }
 
-.passo{
+.passo {
     min-width: 28px;
     height: 28px;
     background-color: var(--cor-laranja);
     border-radius: 50%;
 }
 
-.ordem-receita{
+.ordem-receita {
     font-size: 14px;
     color: var(--cor-branco);
     font-weight: 600;
 }
 
 .dica-chef {
-    background-color: #FFF7ED; 
-    border: 1px solid #FED7AA; 
-    color: #9A3412; 
+    background-color: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
 }
 
 .destaque-dica {

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Saboro.Core.Interfaces.Repositories;
 using Saboro.Core.Models;
 using Saboro.Data.Context;
+using Saboro.Data.Extensions;
 
 namespace Saboro.Data.Repositories.Base;
 
@@ -57,7 +58,8 @@ public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(
             });
         }
 
-        await _dbContext.SaveChangesAsync();
+        _dbContext.Receitas.Update(receitaExistente); // <- ESSENCIAL
+    await _dbContext.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<Receita>> BuscarReceitaAsync()
@@ -79,6 +81,18 @@ public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(
             .Include(r => r.ModoPreparoReceitas)
             .FirstOrDefaultAsync(r => r.Id == id);
     }
+
+    public async Task<IEnumerable<Receita>> BuscarReceitaPorUsuarioAsync(int idUsuario)
+    {
+        return await _dbContext.Receitas
+            .Include(r => r.CategoriaFavorita)
+            .Include(r => r.DificuldadeReceita)
+            .Include(r => r.Ingredientes)
+            .Include(r => r.ModoPreparoReceitas)
+            .Where(r => r.IdUsuario == idUsuario)
+            .ToListAsync();
+    }
+
 
     public async Task RemoverAsync(int id)
     {

@@ -30,9 +30,11 @@
 <body>
     <header class="container-header uk-flex uk-flex-center uk-flex-middle uk-box-shadow-medium">
         <div class=" uk-flex uk-flex-middle uk-flex-between uk-width-1-1 uk-container uk-container-expand">
-            <div class="uk-flex uk-flex-middle titulo-header">
-                <i class="icone-logo-header"></i>
-                <p class="uk-margin-remove-top uk-margin-remove-bottom">Saboro</p>
+            <div class="uk-flex uk-flex-middle">
+                <a href='@Url.Action("Index", "Home")' class="uk-flex uk-flex-middle uk-text-decoration-none">
+                    <i class="icone-logo-header"></i>
+                    <p class="uk-margin-remove-top uk-margin-remove-bottom titulo-header">Saboro</p>
+                </a>
             </div>
             <div class="uk-flex uk-flex-middle uk-flex-right">
                 <p class="uk-margin-remove-bottom uk-margin-small-right">Olá, @nomeUsuario</p>
@@ -48,12 +50,6 @@
                 </a>
             </div>
         </div>
-        <!-- Imagem no canto direito -->
-        <a href='@Url.Action("Index", "Home")' class="logo-position">
-            <div class="uk-text-right">
-                <i class="logo-sistema"></i>
-            </div>
-        </a>
     </header>
     <div class="">
         <main role="main" class="pb-3">

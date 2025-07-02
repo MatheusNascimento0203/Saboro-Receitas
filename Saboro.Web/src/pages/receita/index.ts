@@ -1,4 +1,4 @@
-import $ from "jquery";
+import $, { data } from "jquery";
 import Toast from "components/toast";
 import Loading from "components/loading";
 import "styles/index.less";
@@ -6,6 +6,7 @@ import "./index.less";
 import UIkit from "uikit";
 import Icons from "uikiticonsjs";
 import formHelper from "helpers/form";
+
 
 UIkit.use(Icons);
 
@@ -16,6 +17,7 @@ interface IReceitaModel {
         postCadastrarReceita: string;
         removerReceita: string;
         getEditarReceita: string;
+        postEditarReceita: string;
     };
 }
 
@@ -34,6 +36,26 @@ export function cadastrarReceita(form: HTMLFormElement) {
             setTimeout(() => {
                 window.location.reload();
             }, 2000);
+        })
+        .fail((erro) => {
+            Loading.hide();
+            Toast.error(erro);
+        })
+        .always(() => {
+            Loading.hide();
+        });
+}
+
+export function editarReceita(form: HTMLFormElement, url: string) {
+    const formData = formHelper.serializeObject(form);
+    console.log(url);
+
+    $.post({ url, data: formData })
+        .done(() => {
+            Loading.show();
+            console.log(url);
+            console.log(formData);
+            Toast.success("Receita editada com sucesso!");
         })
         .fail((erro) => {
             Loading.hide();
@@ -215,3 +237,5 @@ export function excluirReceita(url: string, id: number) {
 export function visualizarReceita(id: number) {
     UIkit.modal(`#modal-visualizar-receita-${id}`).show();
 }
+
+

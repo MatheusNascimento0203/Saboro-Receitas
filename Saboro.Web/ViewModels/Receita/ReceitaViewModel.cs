@@ -24,6 +24,7 @@ public class ReceitaViewModel
 
     public Receita ToModel() => new()
     {
+        Id = Id,
         IdUsuario = IdUsuario,
         IdDificuldadeReceita = IdDificuldadeReceita,
         IdCategoriaFavorita = IdCategoriaFavorita,
@@ -32,6 +33,8 @@ public class ReceitaViewModel
         TempoPreparo = TempoPreparo,
         QtdPorcoes = QtdPorcoes,
         DataCadastro = DataCadastro,
+        UsuarioUltimaAlteracao = UsuarioUltimaAlteracao,
+        DataUltimaAlteracao = DataUltimaAlteracao
     };
 
     public bool IsValid(INotification notification)

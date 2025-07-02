@@ -17,7 +17,11 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
     [HttpGet("lista-receita")]
     public async Task<IActionResult> Index()
     {
-        var receitas = await _receitaRepository.BuscarReceitaAsync();
+        var usuario = HttpContext.GetUser();
+        if (usuario == null)
+            return Unauthorized();
+
+        var receitas = await _receitaRepository.BuscarReceitaPorUsuarioAsync(usuario.Id);
         var receitasOrdenadas = receitas.OrderBy(r => r.TituloReceita).ToList();
         return View("Index", receitasOrdenadas);
     }
@@ -25,7 +29,11 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
     [HttpGet("buscar-receita")]
     public async Task<IActionResult> BuscarReceita()
     {
-        var receitas = await _receitaRepository.BuscarReceitaAsync();
+        var usuario = HttpContext.GetUser();
+        if (usuario == null)
+            return Unauthorized();
+
+        var receitas = await _receitaRepository.BuscarReceitaPorUsuarioAsync(usuario.Id);
         var receitasOrdenadas = receitas.OrderBy(r => r.TituloReceita).ToList();
         return PartialView("_CardResultadoReceita", receitasOrdenadas);
     }
@@ -104,10 +112,74 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
     public async Task<IActionResult> GetEditarReceitaAsync(int id)
     {
         var receita = await _receitaRepository.BuscarReceitaPorIdAsync(id);
-        
+
         if (receita == null)
             return BadRequest("Receita nao encontrada.");
 
-        return View("Editar", receita);
+        // var viewModel = new ReceitaCompletaViewModel
+        // {
+        //     Receita = receita
+        //     Ingredientes = receita.Ingredientes.Select(i => new IngredienteReceitaViewModel
+        //     {
+        //         DescricaoIngrediente = i.DescricaoIngrediente
+        //     }).ToList(),
+        //     ModosPreparo = receita.ModoPreparoReceitas.Select(p => new ModoPreparoReceitaViewModel
+        //     {
+        //         Descricao = p.Descricao,
+        //         Ordem = p.Ordem
+        //     }).ToList()
+        // };
+
+        var categoriasFavoritas = await _categoriaFavoritaRepository.BuscarCategoriaAsync();
+        var dificuldades = await _dificuldadeReceitaRepository.BuscarDificuldadeAsync();
+
+        if (categoriasFavoritas == null || dificuldades == null)
+            return BadRequest("Nenhuma categoria cadastrada.");
+
+        ViewBag.CategoriaFavorita = categoriasFavoritas;
+        ViewBag.DificuldadeReceita = dificuldades;
+
+        return View("Editar", receita );
+    }
+
+    [HttpPost, Route("editar/{id}")]
+    public async Task<IActionResult> PostEditarReceitaAsync(int id, ReceitaCompletaViewModel model)
+    {
+        if (model == null)
+            return BadRequest("Receita inválida.");
+
+        var usuarioLogado = HttpContext.GetUser();
+        if (usuarioLogado == null)
+            return BadRequest("Usuário não autenticado.");
+
+        if (model.Receita == null || model.Ingredientes == null || model.ModosPreparo == null)
+            return BadRequest("Dados da Receita são obrigatórios.");
+
+        if (!model.Receita.IsValid(notification))
+            return BadRequest(_notification.GetAsString());
+
+        foreach (var item in model.Ingredientes)
+        {
+            if (!item.IsValid(notification))
+                return BadRequest(notification.GetAsString());
+        }
+
+        foreach (var item in model.ModosPreparo)
+        {
+            if (!item.IsValid(notification))
+                return BadRequest(notification.GetAsString());
+        }
+
+        model.Receita.Id = id;
+        model.Receita.UsuarioUltimaAlteracao = usuarioLogado.Id;
+        model.Receita.DataUltimaAlteracao = DateTime.Now;
+        var receita = model.Receita.ToModel();
+
+        receita.Ingredientes = model.Ingredientes.Select(x => x.ToModel()).ToList();
+        receita.ModoPreparoReceitas = model.ModosPreparo.Select(x => x.ToModel()).ToList();
+
+        await _receitaRepository.AtualizarAsync(id, receita);
+
+        return Ok("Receita atualizada com sucesso!");
     }
 }

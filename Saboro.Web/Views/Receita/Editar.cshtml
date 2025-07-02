@@ -1,16 +1,164 @@
+@model Saboro.Web.ViewModels.Receitas.ReceitaCompletaViewModel
+
 @{
-    Layout = null;
     ViewData["Title"] = "Editar Receita";
 }
 
-<h2>CHEGOU</h2>
+<div class="uk-margin-medium-top uk-margin-medium-bottom container-principal-form">
+    <div class="uk-margin-small-left uk-margin-small-top">
+        <h2>Editar Receita - @Model.Receita.TituloReceita</h2>
+    </div>
+    <form onsubmit="event.preventDefault(); saboro.receita.editarReceita(this, '@Url.Action("PostEditarReceita", "Receita", new {id = @Model.Receita.Id})')">
+        <div class="uk-flex uk-flex-middle gap-input uk-margin-small-left uk-margin-small-right">
+            <div class="uk-flex uk-flex-column uk-width-1-2">
+                <label class="uk-form-label uk-text-bold uk-text-small">Titulo da Receita<span
+                        class="icone-obrigatorio">*</span></label>
+                <div
+                    class="uk-form-controls uk-padding-remove-top uk-padding-remove-left uk-padding-remove-right uk-padding-small ">
+                    <input class="uk-input uk-border-rounded focus-input" type="text" name="Receita.TituloReceita"
+                        id="titulo-receita" placeholder="Insira o titulo da receita" value="@Model.Receita.TituloReceita"
+                        data-rules="required" maxlength="50" />
+                </div>
+            </div>
+            <div class="  uk-flex uk-flex-column uk-width-1-2">
+                <label
+                    class="uk-form-label uk-text-bold uk-text-small uk-form-label uk-text-bold uk-text-small uk-padding-remove-top uk-padding-remove-bottom uk-padding-remove-right uk-padding-small uk-padding-remove-left">Categoria
+                    <span class="icone-obrigatorio">*</span></label>
+                <div
+                    class="uk-form-controls uk-padding-remove-top uk-padding-remove-right uk-padding-small uk-padding-remove-left">
+                    <select class="uk-select uk-border-rounded focus-select" name="Receita.IdCategoriaFavorita"
+                        id="eventoMaratona">
+                        <option value="0">Selecione a Categoria</option>
+                        @foreach (var categoriaFavorita in ViewBag.CategoriaFavorita)
+                        {
+                            <option value="@categoriaFavorita.Id"
+                                selected="@(categoriaFavorita.Id == Model?.Receita.IdCategoriaFavorita ? "selected" : null)">
+                                @categoriaFavorita.NomeCategoria</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="uk-flex uk-flex-column uk-margin-small-right">
+            <label
+                class="uk-form-label uk-text-bold uk-text-small uk-padding-remove-top uk-padding-remove-bottom uk-padding-remove-right uk-padding-small">Descrição
+                <span class="icone-obrigatorio">*</span></label>
+            <div class="uk-form-controls uk-padding-remove-top uk-padding-remove-right uk-padding-small">
+                <textarea class="uk-border-rounded uk-textarea focus-textarea" id="descricao-receita"
+                    name="Receita.DescricaoReceita" rows="5" cols="60"
+                    placeholder="Insira as condições especiais de saúde...">@Model.Receita.DescricaoReceita</textarea>
+            </div>
+        </div>
+        <div class="uk-flex uk-flex-middle gap-input uk-margin-small-left uk-margin-small-right">
+            <div class="uk-flex uk-flex-column uk-width-1-2">
+                <label class="uk-form-label uk-text-bold uk-text-small">Tempo de Preparo (min) <span
+                        class="icone-obrigatorio">*</span></label>
+                <div
+                    class="uk-form-controls uk-padding-remove-top uk-padding-remove-left uk-padding-remove-right uk-padding-small ">
+                    <input class="uk-input uk-border-rounded focus-input" type="number" name="Receita.TempoPreparo"
+                        id="tempo-preparo" placeholder="Insira o tempo de preparo" value="@Model.Receita.TempoPreparo"
+                        data-rules="required" maxlength="50" />
+                </div>
+            </div>
+            <div class="uk-flex uk-flex-column uk-width-1-2">
+                <label class="uk-form-label uk-text-bold uk-text-small">Porções <span
+                        class="icone-obrigatorio">*</span></label>
+                <div
+                    class="uk-form-controls uk-padding-remove-top uk-padding-remove-left uk-padding-remove-right uk-padding-small ">
+                    <input class="uk-input uk-border-rounded focus-input" type="number" name="Receita.QtdPorcoes"
+                        id="qtd-porcoes" placeholder="Insira a quantidade de Porções" value="@Model.Receita.QtdPorcoes"
+                        data-rules="required" maxlength="50" />
+                </div>
+            </div>
+            <div class="uk-flex uk-flex-column uk-width-1-2">
+                <label
+                    class="uk-form-label uk-text-bold uk-text-small uk-form-label uk-text-bold uk-text-small uk-padding-remove-top uk-padding-remove-bottom uk-padding-remove-right uk-padding-small uk-padding-remove-left">Dificuldade
+                    <span class="icone-obrigatorio">*</span></label>
+                <div
+                    class="uk-form-controls uk-padding-remove-top uk-padding-remove-right uk-padding-small uk-padding-remove-left ">
+                    <select class="uk-select uk-border-rounded focus-select" name="Receita.IdDificuldadeReceita"
+                        id="eventoMaratona">
+                        <option value="0">Selecione a Dificuldade</option>
+                        @foreach (var dificuldadeReceita in ViewBag.DificuldadeReceita)
+                        {
+                            <option value="@dificuldadeReceita.Id"
+                                selected="@(dificuldadeReceita.Id == Model?.Receita.IdDificuldadeReceita ? "selected" : null)">
+                                @dificuldadeReceita.Dificuldade</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="uk-margin-small-left uk-margin-small-right">
+            <div class="uk-flex uk-flex-between uk-flex-middle">
+                <label class="uk-form-label uk-text-bold uk-text-small">
+                    Ingredientes <span class="icone-obrigatorio">*</span>
+                </label>
+                <button type="button" onclick="saboro.receita.adicionarIngrediente()"
+                    class="uk-flex uk-flex-middle uk-border-rounded container-botao-padrao">
+                    <i class="icone-adicionar-claro uk-margin-small-right"></i>
+                    Adicionar
+                </button>
+            </div>
+            <div id="lista-ingredientes" class="uk-margin-small-top">
+                @for (var i = 0; i < Model.Ingredientes.Count(); i++)
+                {
+                    var ingrediente = Model.Ingredientes.ElementAt(i);
+                    <div id="ingrediente-@i" class="uk-flex uk-flex-middle uk-margin-small linha-ingrediente">
+                        <input class="uk-input uk-border-rounded uk-width-expand" type="text"
+                            name="Ingredientes[@i].DescricaoIngrediente" placeholder="Ingrediente @(i + 1)"
+                            value="@ingrediente.DescricaoIngrediente" />
 
+                        <button type="button" class="uk-margin-small-left botao-excluir-lista"
+                            onclick="saboro.receita.removerIngrediente('ingrediente-@i')">
+                            <i class="icone-excluir-passos-ingredientes"></i>
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="uk-margin-small-left uk-margin-small-right">
+            <div class="uk-flex uk-flex-between uk-flex-middle">
+                <label class="uk-form-label uk-text-bold uk-text-small">
+                    Modo de Preparo <span class="icone-obrigatorio">*</span>
+                </label>
+                <button type="button" onclick="saboro.receita.adicionarPassos()"
+                    class="uk-flex uk-flex-middle uk-border-rounded container-botao-padrao">
+                    <i class="icone-adicionar-claro uk-margin-small-right"></i>
+                    Adicionar
+                </button>
+            </div>
+            <div id="lista-passos" class="uk-margin-small-top">
+                @for (var i = 0; i < Model.ModosPreparo.Count(); i++)
+                {
+                    var passo = Model.ModosPreparo.ElementAt(i);
+                    <div id="passo-@i" class="uk-flex uk-flex-middle uk-margin-small linha-passo">
+                        <div class="uk-width-expand">
+                            <textarea class="uk-textarea uk-border-rounded uk-width-1-1" name="ModosPreparo[@i].Descricao"
+                            placeholder="Passo @(i + 1)" style="height: 80px;">@passo.Descricao</textarea>
+                            <input type="hidden" name="ModosPreparo[@i].Ordem" value="@passo.Ordem" />
+                        </div>
 
+                        <button type="button" class="uk-margin-small-left botao-excluir-lista uk-margin-medium-bottom"
+                            onclick="saboro.receita.removerPasso('passo-@i')">
+                            <i class="icone-excluir-passos-ingredientes"></i>
+                        </button>
+                    </div>
+                }
+            </div>
+            <div
+                class="uk-flex uk-margin-small-left uk-margin-small-right uk-margin-small-bottom container-botoes uk-margin-medium-top">
+                <button type="button" onclick="window.history.back()"
+                    class="btn-cancelar uk-border-rounded">Cancelar</button>
+                <button class="btn-salvar uk-border-rounded">Salvar Alterações</button>
+            </div>
+    </form>
+</div>
 <script src="@Url.Content("~/dist/receita.entry.js")" asp-append-version="true"></script>
 <script>
     saboro.receita.init({
         urls: {
-            getEditarReceita: '@Url.Action("GetEditarReceita", "Receita")'
+            getEditarReceita: '@Url.Action("GetEditarReceita", "Receita")',
         }
-    })
+    })    
 </script>
