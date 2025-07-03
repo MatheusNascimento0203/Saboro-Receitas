@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using Saboro.Core.Interfaces.Repositories;
 using Saboro.Core.Models;
@@ -16,51 +17,64 @@ public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task AtualizarAsync(int id, Receita receita)
+    public async Task AtualizarAsync(int id, object receita)
     {
+        var transaction = await _dbContext.Database.BeginTransactionAsync();
 
+        try
+        {
+            await AtualizarIngredientesAsync(id, (Receita)receita);
+            await AtualizarModoPreparoAsync(id, (Receita)receita);
+            await _dbContext.UpdateEntryAsync<Receita>(id, receita);
+            await transaction.CommitAsync();
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
+            throw new Exception("Erro ao atualizar receita.", ex);
+        }
+    }
+
+    public async Task AtualizarIngredientesAsync(int id, Receita receita)
+    {
         var receitaExistente = await BuscarReceitaPorIdAsync(id);
 
         if (receitaExistente == null)
-            throw new Exception("Receita não encontrada");
+            throw new Exception("Receita nao encontrada.");
 
-        receitaExistente.TituloReceita = receita.TituloReceita;
-        receitaExistente.IdDificuldadeReceita = receita.IdDificuldadeReceita;
-        receitaExistente.IdCategoriaFavorita = receita.IdCategoriaFavorita;
-        receitaExistente.DescricaoReceita = receita.DescricaoReceita;
-        receitaExistente.TempoPreparo = receita.TempoPreparo;
-        receitaExistente.QtdPorcoes = receita.QtdPorcoes;
-        receitaExistente.UsuarioUltimaAlteracao = receita.UsuarioUltimaAlteracao;
-        receitaExistente.DataUltimaAlteracao = DateTime.Now;
 
         _dbContext.Ingredientes.RemoveRange(receitaExistente.Ingredientes);
         await _dbContext.SaveChangesAsync();
 
-        foreach (var ingrediente in receita.Ingredientes)
+        var novosIngredientes = receita.Ingredientes.Select(i => new IngredienteReceita
         {
-            receitaExistente.Ingredientes.Add(new IngredienteReceita
-            {
-                IdReceita = id,
-                DescricaoIngrediente = ingrediente.DescricaoIngrediente
-            });
-        }
+            IdReceita = id,
+            DescricaoIngrediente = i.DescricaoIngrediente,
+        });
+
+        await _dbContext.AddRangeAsync(novosIngredientes);
+    }
+
+    public async Task AtualizarModoPreparoAsync(int id, Receita receita)
+    {
+        var receitaExistente = await BuscarReceitaPorIdAsync(id);
+
+        if (receitaExistente == null)
+            throw new Exception("Receita nao encontrada.");
 
         _dbContext.ModosPreparoReceitas.RemoveRange(receitaExistente.ModoPreparoReceitas);
         await _dbContext.SaveChangesAsync();
 
-        foreach (var passo in receita.ModoPreparoReceitas.OrderBy(p => p.Ordem))
+        var novosModosPreparo = receita.ModoPreparoReceitas.Select(i => new ModoPreparoReceita
         {
-            receitaExistente.ModoPreparoReceitas.Add(new ModoPreparoReceita
-            {
-                IdReceita = id,
-                Descricao = passo.Descricao,
-                Ordem = passo.Ordem
-            });
-        }
+            IdReceita = id,
+            Ordem = i.Ordem,
+            Descricao = i.Descricao,
+        });
 
-        _dbContext.Receitas.Update(receitaExistente); // <- ESSENCIAL
-    await _dbContext.SaveChangesAsync();
+        await _dbContext.AddRangeAsync(novosModosPreparo);
     }
+
 
     public async Task<IEnumerable<Receita>> BuscarReceitaAsync()
     {

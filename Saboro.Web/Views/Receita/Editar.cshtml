@@ -1,4 +1,4 @@
-@model Saboro.Web.ViewModels.Receitas.ReceitaCompletaViewModel
+@model Saboro.Core.Models.Receita;
 
 @{
     ViewData["Title"] = "Editar Receita";
@@ -6,9 +6,9 @@
 
 <div class="uk-margin-medium-top uk-margin-medium-bottom container-principal-form">
     <div class="uk-margin-small-left uk-margin-small-top">
-        <h2>Editar Receita - @Model.Receita.TituloReceita</h2>
+        <h2>Editar Receita - @Model.TituloReceita</h2>
     </div>
-    <form onsubmit="event.preventDefault(); saboro.receita.editarReceita(this, '@Url.Action("PostEditarReceita", "Receita", new {id = @Model.Receita.Id})')">
+    <form onsubmit="event.preventDefault(); saboro.receita.editarReceita(this, '@Url.Action("PostEditarReceita", "Receita", new {id = @Model.Id})')">
         <div class="uk-flex uk-flex-middle gap-input uk-margin-small-left uk-margin-small-right">
             <div class="uk-flex uk-flex-column uk-width-1-2">
                 <label class="uk-form-label uk-text-bold uk-text-small">Titulo da Receita<span
@@ -16,7 +16,7 @@
                 <div
                     class="uk-form-controls uk-padding-remove-top uk-padding-remove-left uk-padding-remove-right uk-padding-small ">
                     <input class="uk-input uk-border-rounded focus-input" type="text" name="Receita.TituloReceita"
-                        id="titulo-receita" placeholder="Insira o titulo da receita" value="@Model.Receita.TituloReceita"
+                        id="titulo-receita" placeholder="Insira o titulo da receita" value="@Model.TituloReceita"
                         data-rules="required" maxlength="50" />
                 </div>
             </div>
@@ -27,12 +27,12 @@
                 <div
                     class="uk-form-controls uk-padding-remove-top uk-padding-remove-right uk-padding-small uk-padding-remove-left">
                     <select class="uk-select uk-border-rounded focus-select" name="Receita.IdCategoriaFavorita"
-                        id="eventoMaratona">
+                        id="idCategoriaFavorita">
                         <option value="0">Selecione a Categoria</option>
                         @foreach (var categoriaFavorita in ViewBag.CategoriaFavorita)
                         {
                             <option value="@categoriaFavorita.Id"
-                                selected="@(categoriaFavorita.Id == Model?.Receita.IdCategoriaFavorita ? "selected" : null)">
+                                selected="@(categoriaFavorita.Id == Model?.IdCategoriaFavorita ? "selected" : null)">
                                 @categoriaFavorita.NomeCategoria</option>
                         }
                     </select>
@@ -46,7 +46,7 @@
             <div class="uk-form-controls uk-padding-remove-top uk-padding-remove-right uk-padding-small">
                 <textarea class="uk-border-rounded uk-textarea focus-textarea" id="descricao-receita"
                     name="Receita.DescricaoReceita" rows="5" cols="60"
-                    placeholder="Insira as condições especiais de saúde...">@Model.Receita.DescricaoReceita</textarea>
+                    placeholder="Insira as condições especiais de saúde...">@Model.DescricaoReceita</textarea>
             </div>
         </div>
         <div class="uk-flex uk-flex-middle gap-input uk-margin-small-left uk-margin-small-right">
@@ -56,7 +56,7 @@
                 <div
                     class="uk-form-controls uk-padding-remove-top uk-padding-remove-left uk-padding-remove-right uk-padding-small ">
                     <input class="uk-input uk-border-rounded focus-input" type="number" name="Receita.TempoPreparo"
-                        id="tempo-preparo" placeholder="Insira o tempo de preparo" value="@Model.Receita.TempoPreparo"
+                        id="tempo-preparo" placeholder="Insira o tempo de preparo" value="@Model.TempoPreparo"
                         data-rules="required" maxlength="50" />
                 </div>
             </div>
@@ -66,7 +66,7 @@
                 <div
                     class="uk-form-controls uk-padding-remove-top uk-padding-remove-left uk-padding-remove-right uk-padding-small ">
                     <input class="uk-input uk-border-rounded focus-input" type="number" name="Receita.QtdPorcoes"
-                        id="qtd-porcoes" placeholder="Insira a quantidade de Porções" value="@Model.Receita.QtdPorcoes"
+                        id="qtd-porcoes" placeholder="Insira a quantidade de Porções" value="@Model.QtdPorcoes"
                         data-rules="required" maxlength="50" />
                 </div>
             </div>
@@ -77,12 +77,12 @@
                 <div
                     class="uk-form-controls uk-padding-remove-top uk-padding-remove-right uk-padding-small uk-padding-remove-left ">
                     <select class="uk-select uk-border-rounded focus-select" name="Receita.IdDificuldadeReceita"
-                        id="eventoMaratona">
+                        id="IdDificuldadeReceita">
                         <option value="0">Selecione a Dificuldade</option>
                         @foreach (var dificuldadeReceita in ViewBag.DificuldadeReceita)
                         {
                             <option value="@dificuldadeReceita.Id"
-                                selected="@(dificuldadeReceita.Id == Model?.Receita.IdDificuldadeReceita ? "selected" : null)">
+                                selected="@(dificuldadeReceita.Id == Model?.IdDificuldadeReceita ? "selected" : null)">
                                 @dificuldadeReceita.Dificuldade</option>
                         }
                     </select>
@@ -129,9 +129,9 @@
                 </button>
             </div>
             <div id="lista-passos" class="uk-margin-small-top">
-                @for (var i = 0; i < Model.ModosPreparo.Count(); i++)
+                @for (var i = 0; i < Model.ModoPreparoReceitas.Count(); i++)
                 {
-                    var passo = Model.ModosPreparo.ElementAt(i);
+                    var passo = Model.ModoPreparoReceitas.ElementAt(i);
                     <div id="passo-@i" class="uk-flex uk-flex-middle uk-margin-small linha-passo">
                         <div class="uk-width-expand">
                             <textarea class="uk-textarea uk-border-rounded uk-width-1-1" name="ModosPreparo[@i].Descricao"

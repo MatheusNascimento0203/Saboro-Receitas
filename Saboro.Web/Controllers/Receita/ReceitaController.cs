@@ -116,20 +116,6 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
         if (receita == null)
             return BadRequest("Receita nao encontrada.");
 
-        // var viewModel = new ReceitaCompletaViewModel
-        // {
-        //     Receita = receita
-        //     Ingredientes = receita.Ingredientes.Select(i => new IngredienteReceitaViewModel
-        //     {
-        //         DescricaoIngrediente = i.DescricaoIngrediente
-        //     }).ToList(),
-        //     ModosPreparo = receita.ModoPreparoReceitas.Select(p => new ModoPreparoReceitaViewModel
-        //     {
-        //         Descricao = p.Descricao,
-        //         Ordem = p.Ordem
-        //     }).ToList()
-        // };
-
         var categoriasFavoritas = await _categoriaFavoritaRepository.BuscarCategoriaAsync();
         var dificuldades = await _dificuldadeReceitaRepository.BuscarDificuldadeAsync();
 
@@ -145,6 +131,12 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
     [HttpPost, Route("editar/{id}")]
     public async Task<IActionResult> PostEditarReceitaAsync(int id, ReceitaCompletaViewModel model)
     {
+
+        var receitaExistente = await _receitaRepository.BuscarReceitaPorIdAsync(id);
+
+        if (receitaExistente == null)
+            return BadRequest("Receita nao encontrada.");
+
         if (model == null)
             return BadRequest("Receita inválida.");
 
@@ -171,6 +163,7 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
         }
 
         model.Receita.Id = id;
+        model.Receita.IdUsuario = receitaExistente.IdUsuario;
         model.Receita.UsuarioUltimaAlteracao = usuarioLogado.Id;
         model.Receita.DataUltimaAlteracao = DateTime.Now;
         var receita = model.Receita.ToModel();
