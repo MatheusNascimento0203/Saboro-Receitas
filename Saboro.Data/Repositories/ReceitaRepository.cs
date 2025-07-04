@@ -23,9 +23,13 @@ public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(
 
         try
         {
-            await AtualizarIngredientesAsync(id, (Receita)receita);
-            await AtualizarModoPreparoAsync(id, (Receita)receita);
+            var receitaModel = (Receita)receita;
+
+            await AtualizarIngredientesAsync(id, receitaModel);
+            await AtualizarModoPreparoAsync(id, receitaModel);
+            
             await _dbContext.UpdateEntryAsync<Receita>(id, receita);
+            await _dbContext.SaveChangesAsync();
             await transaction.CommitAsync();
         }
         catch (Exception ex)
@@ -42,12 +46,12 @@ public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(
         if (receitaExistente == null)
             throw new Exception("Receita nao encontrada.");
 
-
         _dbContext.Ingredientes.RemoveRange(receitaExistente.Ingredientes);
         await _dbContext.SaveChangesAsync();
 
         var novosIngredientes = receita.Ingredientes.Select(i => new IngredienteReceita
         {
+            Id = i.Id,
             IdReceita = id,
             DescricaoIngrediente = i.DescricaoIngrediente,
         });
@@ -62,14 +66,23 @@ public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(
         if (receitaExistente == null)
             throw new Exception("Receita nao encontrada.");
 
-        _dbContext.ModosPreparoReceitas.RemoveRange(receitaExistente.ModoPreparoReceitas);
+        try
+        {
+            _dbContext.ModosPreparoReceitas.RemoveRange(receitaExistente.ModoPreparoReceitas);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("ERRO real: " + ex.Message);
+            throw;
+        }
         await _dbContext.SaveChangesAsync();
 
-        var novosModosPreparo = receita.ModoPreparoReceitas.Select(i => new ModoPreparoReceita
+        var novosModosPreparo = receita.ModoPreparoReceitas.Select(md => new ModoPreparoReceita
         {
+            Id = md.Id,
             IdReceita = id,
-            Ordem = i.Ordem,
-            Descricao = i.Descricao,
+            Ordem = md.Ordem,
+            Descricao = md.Descricao,
         });
 
         await _dbContext.AddRangeAsync(novosModosPreparo);
@@ -93,6 +106,7 @@ public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(
             .Include(r => r.DificuldadeReceita)
             .Include(r => r.Ingredientes)
             .Include(r => r.ModoPreparoReceitas)
+            .AsNoTracking()
             .FirstOrDefaultAsync(r => r.Id == id);
     }
 
