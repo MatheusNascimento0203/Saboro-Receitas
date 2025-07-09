@@ -27,7 +27,7 @@ public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(
 
             await AtualizarIngredientesAsync(id, receitaModel);
             await AtualizarModoPreparoAsync(id, receitaModel);
-            
+
             await _dbContext.UpdateEntryAsync<Receita>(id, receita);
             await _dbContext.SaveChangesAsync();
             await transaction.CommitAsync();
@@ -61,31 +61,46 @@ public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(
 
     public async Task AtualizarModoPreparoAsync(int id, Receita receita)
     {
-        var receitaExistente = await BuscarReceitaPorIdAsync(id);
-
-        if (receitaExistente == null)
-            throw new Exception("Receita nao encontrada.");
-
-        try
+        // Desanexar todos os modos de preparo rastreados
+        var entries = _dbContext.ChangeTracker.Entries<ModoPreparoReceita>();
+        foreach (var entry in entries)
         {
-            _dbContext.ModosPreparoReceitas.RemoveRange(receitaExistente.ModoPreparoReceitas);
+            entry.State = EntityState.Detached;
         }
-        catch (Exception ex)
+
+        // Buscar os registros existentes
+        var existentes = await _dbContext.ModosPreparoReceitas
+            .Where(x => x.IdReceita == id)
+            .ToListAsync();
+
+        // Atualiza ou adiciona novos
+        foreach (var md in receita.ModoPreparoReceitas)
         {
-            Console.WriteLine("ERRO real: " + ex.Message);
-            throw;
+            var existente = existentes.FirstOrDefault(x => x.Id == md.Id);
+
+            if (existente != null)
+            {
+                existente.Descricao = md.Descricao;
+                existente.Ordem = md.Ordem;
+                _dbContext.Update(existente);
+            }
+            else
+            {
+                _dbContext.Add(new ModoPreparoReceita
+                {
+                    IdReceita = id,
+                    Ordem = md.Ordem,
+                    Descricao = md.Descricao
+                });
+            }
         }
+
+        // Remove os que não vieram no novo modelo
+        var idsRecebidos = receita.ModoPreparoReceitas.Select(x => x.Id).ToList();
+        var aRemover = existentes.Where(x => !idsRecebidos.Contains(x.Id));
+        _dbContext.ModosPreparoReceitas.RemoveRange(aRemover);
+
         await _dbContext.SaveChangesAsync();
-
-        var novosModosPreparo = receita.ModoPreparoReceitas.Select(md => new ModoPreparoReceita
-        {
-            Id = md.Id,
-            IdReceita = id,
-            Ordem = md.Ordem,
-            Descricao = md.Descricao,
-        });
-
-        await _dbContext.AddRangeAsync(novosModosPreparo);
     }
 
 
