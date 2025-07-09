@@ -61,19 +61,17 @@ public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(
 
     public async Task AtualizarModoPreparoAsync(int id, Receita receita)
     {
-        // Desanexar todos os modos de preparo rastreados
+
         var entries = _dbContext.ChangeTracker.Entries<ModoPreparoReceita>();
         foreach (var entry in entries)
         {
             entry.State = EntityState.Detached;
         }
 
-        // Buscar os registros existentes
         var existentes = await _dbContext.ModosPreparoReceitas
             .Where(x => x.IdReceita == id)
             .ToListAsync();
 
-        // Atualiza ou adiciona novos
         foreach (var md in receita.ModoPreparoReceitas)
         {
             var existente = existentes.FirstOrDefault(x => x.Id == md.Id);
@@ -95,7 +93,6 @@ public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(
             }
         }
 
-        // Remove os que não vieram no novo modelo
         var idsRecebidos = receita.ModoPreparoReceitas.Select(x => x.Id).ToList();
         var aRemover = existentes.Where(x => !idsRecebidos.Contains(x.Id));
         _dbContext.ModosPreparoReceitas.RemoveRange(aRemover);
