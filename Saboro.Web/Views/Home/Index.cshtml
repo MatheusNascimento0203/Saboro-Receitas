@@ -3,12 +3,14 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div>
-    <h2>TELA HOME</h2>
+<div class="uk-flex uk-flex-middle uk-flex-column uk-flex-center uk-margin-medium-top">
+    <i class="icone-logo-home"></i>
+    <p class="uk-margin-remove-bottom uk-margin-remove-top texto-destaque">Nenhuma receita cadastrada</p>
+    <p class="uk-margin-remove-bottom uk-margin-remove-top">Você ainda não possui receitas em seu sistema.</p>
+    <p class="uk-margin-remove-bottom uk-margin-remove-top">Deseja cadastrar sua primeira receita?</p>
     <a href="@Url.Action("Index", "Receita")">
-        <button>RECEITA</button>
+        <button>Cadastrar Receita</button>
     </a>
-    <button onclick="saboro.home.teste()" id="teste">TESTE</button>
 </div>
 
 <script src="~/dist/home.entry.js" asp-append-version="true"></script>
