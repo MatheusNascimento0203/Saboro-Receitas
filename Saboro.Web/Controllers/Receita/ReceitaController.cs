@@ -29,13 +29,23 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
     }
 
     [HttpGet("buscar-receita")]
-    public async Task<IActionResult> BuscarReceita()
+    public async Task<IActionResult> BuscarReceita(string nome = "")
     {
         var usuario = HttpContext.GetUser();
         if (usuario == null)
             return Unauthorized();
 
-        var receitas = await _receitaRepository.BuscarReceitaPorUsuarioAsync(usuario.Id);
+        IEnumerable<Saboro.Core.Models.Receita> receitas;
+
+        if (string.IsNullOrWhiteSpace(nome))
+        {
+            receitas = await _receitaRepository.BuscarReceitaPorUsuarioAsync(usuario.Id);
+        }
+        else
+        {
+            receitas = await _receitaRepository.BuscarReceitaPorUsuarioAsync(usuario.Id, nome);
+        }
+
         var receitasOrdenadas = receitas.OrderBy(r => r.TituloReceita).ToList();
         return PartialView("_CardResultadoReceita", receitasOrdenadas);
     }

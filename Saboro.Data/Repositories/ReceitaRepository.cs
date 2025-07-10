@@ -101,14 +101,25 @@ public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(
     }
 
 
-    public async Task<IEnumerable<Receita>> BuscarReceitaAsync()
+    public async Task<IEnumerable<Receita>> BuscarReceitaAsync(string nome = null, bool buscaExata = false)
     {
-        return await _dbContext.Receitas
-            .Include(r => r.CategoriaFavorita)
+        var query = _dbContext.Receitas.Include(r => r.CategoriaFavorita)
             .Include(r => r.DificuldadeReceita)
             .Include(r => r.Ingredientes)
             .Include(r => r.ModoPreparoReceitas)
-            .ToListAsync();
+            .AsQueryable();
+
+        if (!string.IsNullOrEmpty(nome))
+        {
+            if (buscaExata)
+                query = query.Where(r => r.DescricaoReceita == nome);
+            else
+                query = query.Where(x => EF.Functions.ILike(x.DescricaoReceita, $"%{nome}%"));
+        }
+
+        query = query.OrderBy(r => r.DescricaoReceita);
+
+        return await query.ToArrayAsync();
     }
 
     public async Task<Receita> BuscarReceitaPorIdAsync(int id)
@@ -122,16 +133,18 @@ public class ReceitaRepository(ApplicationDbContext dbContext) : BaseRepository(
             .FirstOrDefaultAsync(r => r.Id == id);
     }
 
-    public async Task<IEnumerable<Receita>> BuscarReceitaPorUsuarioAsync(int idUsuario)
-    {
-        return await _dbContext.Receitas
-            .Include(r => r.CategoriaFavorita)
-            .Include(r => r.DificuldadeReceita)
-            .Include(r => r.Ingredientes)
-            .Include(r => r.ModoPreparoReceitas)
-            .Where(r => r.IdUsuario == idUsuario)
-            .ToListAsync();
-    }
+ public async Task<IEnumerable<Receita>> BuscarReceitaPorUsuarioAsync(int idUsuario, string nome = null)
+{
+    return await _dbContext.Receitas
+        .Include(r => r.CategoriaFavorita)
+        .Include(r => r.DificuldadeReceita)
+        .Include(r => r.Ingredientes)
+        .Include(r => r.ModoPreparoReceitas)
+        .Where(r => r.IdUsuario == idUsuario &&
+               (string.IsNullOrWhiteSpace(nome) ||
+                r.TituloReceita.ToLower().Contains(nome.ToLower())))
+        .ToListAsync();
+}
 
 
     public async Task RemoverAsync(int id)

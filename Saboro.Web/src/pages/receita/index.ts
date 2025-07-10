@@ -18,6 +18,7 @@ interface IReceitaModel {
         getEditarReceita: string;
         postEditarReceita: string;
         homeSemReceita: string;
+        buscarReceita: string;
     };
 }
 
@@ -25,6 +26,7 @@ let model: IReceitaModel;
 
 export function init(params: IReceitaModel) {
     model = params;
+    buscarReceita();
 }
 
 export function cadastrarReceita(form: HTMLFormElement) {
@@ -237,4 +239,26 @@ export function excluirReceita(url: string, id: number) {
 
 export function visualizarReceita(id: number) {
     UIkit.modal(`#modal-visualizar-receita-${id}`).show();
+}
+
+export function buscarReceita() {
+    const url = model.urls.buscarReceita;
+
+    $("#pesquisar-receita").on("keyup", function () {
+        const termo = $(this).val()?.toString().trim() || "";
+        console.log(termo);
+
+        if (termo.length >= 3 || termo.length === 0) {
+            const query = termo.length === 0 ? "" : `?nome=${encodeURIComponent(termo)}`;
+
+            $.get(`${url}${query}`)            
+                .done(function (html) {
+                    $("#resultado-busca").html(html);
+                    console.log($("#resultado-busca").length)
+                })
+                .fail(function (err) {
+                    console.error(err.responseText);
+                });
+        }
+    });
 }
