@@ -2,18 +2,20 @@ using Microsoft.AspNetCore.Mvc;
 using Saboro.Core.Helpers;
 using Saboro.Core.Interfaces.Helpers;
 using Saboro.Core.Interfaces.Repositories;
+using Saboro.Core.Models;
 using Saboro.Web.Extensions;
 using Saboro.Web.ViewModels.Receitas;
 
 namespace Saboro.Web.Controllers.Receita;
 
 [Route("/receita")]
-public class ReceitaController(INotification notification, ICategoriaFavoritaRepository categoriaFavoritaRepository, IDificuldadeReceitaRepository dificuldadeReceitaRepository, IReceitaRepository receitaRepository) : Controller
+public class ReceitaController(INotification notification, ICategoriaFavoritaRepository categoriaFavoritaRepository, IDificuldadeReceitaRepository dificuldadeReceitaRepository, IReceitaRepository receitaRepository, IUsuarioRepository usuarioRepository) : Controller
 {
     private readonly ICategoriaFavoritaRepository _categoriaFavoritaRepository = categoriaFavoritaRepository;
     private readonly IDificuldadeReceitaRepository _dificuldadeReceitaRepository = dificuldadeReceitaRepository;
     private readonly IReceitaRepository _receitaRepository = receitaRepository;
     private readonly INotification _notification = notification;
+    private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
     [HttpGet("lista-receita")]
     public async Task<IActionResult> Index()
     {
@@ -63,6 +65,7 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
             return BadRequest("Receita inválida.");
 
         var usuarioLogado = HttpContext.GetUser();
+
         if (usuarioLogado == null)
             return BadRequest("Usuário não autenticado.");
 
@@ -92,6 +95,19 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
         receita.ModoPreparoReceitas = model.ModosPreparo.Select(x => x.ToModel()).ToList();
 
         await _receitaRepository.AdicionarAsync(receita);
+
+        var nomeUsuario = await _usuarioRepository.BuscarNomePeloIdAsync(usuarioLogado.Id);
+
+        var novoCookie = new UsuarioCookie
+        {
+            Id = usuarioLogado.Id,
+            NomeCompleto = usuarioLogado.NomeCompleto,
+            Email = usuarioLogado.Email,
+            ManterConectado = usuarioLogado.ManterConectado,
+            PossuiReceita = true
+        };
+
+        HttpContext.LogIn(novoCookie);
 
         return Ok("Receita cadastrada com sucesso!");
     }
@@ -125,7 +141,7 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
         ViewBag.CategoriaFavorita = categoriasFavoritas;
         ViewBag.DificuldadeReceita = dificuldades;
 
-        return View("Editar", receita );
+        return View("Editar", receita);
     }
 
     [HttpPost, Route("editar/{id}")]

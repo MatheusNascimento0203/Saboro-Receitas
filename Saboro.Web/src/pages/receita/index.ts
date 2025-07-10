@@ -7,7 +7,6 @@ import UIkit from "uikit";
 import Icons from "uikiticonsjs";
 import formHelper from "helpers/form";
 
-
 UIkit.use(Icons);
 
 interface IReceitaModel {
@@ -18,6 +17,7 @@ interface IReceitaModel {
         removerReceita: string;
         getEditarReceita: string;
         postEditarReceita: string;
+        homeSemReceita: string;
     };
 }
 
@@ -34,7 +34,7 @@ export function cadastrarReceita(form: HTMLFormElement) {
             Loading.show();
             Toast.success("Receita cadastrada com sucesso!");
             setTimeout(() => {
-                window.location.reload();
+                window.location.href = model.urls.index;
             }, 2000);
         })
         .fail((erro) => {
@@ -48,8 +48,6 @@ export function cadastrarReceita(form: HTMLFormElement) {
 
 export function editarReceita(form: HTMLFormElement, url: string) {
     const formData = formHelper.serializeObject(form);
-    console.log(url);
-
     $.post({ url, data: formData })
         .done(() => {
             Loading.show();
@@ -75,7 +73,6 @@ export const getCadastroReceita = () => {
             Toast.error(response.responseText);
         });
 };
-
 
 export function adicionarIngrediente(valor = "") {
     const container = document.getElementById("lista-ingredientes");
@@ -210,14 +207,18 @@ export function excluirReceita(url: string, id: number) {
             Loading.show();
             $.post(url)
                 .done(() => {
-                    $(`#evento-maratona-${id}`).remove();
-                    Toast.success("Evento excluído com sucesso!");
+                    $(`#receita-${id}`).remove();
+                    Toast.success("Receita excluída com sucesso!");
                     UIkit.modal(
                         `#modal-confirmacao-exclusao-receita-${id}`
                     ).hide();
                     setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
+                        if (!$(".card-receitas").children().length) {
+                            window.location.href = model.urls.homeSemReceita;
+                        } else {
+                            window.location.reload();
+                        }
+                    }, 1000);
                 })
                 .fail((erro) => {
                     Toast.error(erro);
@@ -237,5 +238,3 @@ export function excluirReceita(url: string, id: number) {
 export function visualizarReceita(id: number) {
     UIkit.modal(`#modal-visualizar-receita-${id}`).show();
 }
-
-
