@@ -3,12 +3,27 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div>
-    <h2>TELA HOME</h2>
-    <a href="@Url.Action("Index", "Receita")">
-        <button>RECEITA</button>
-    </a>
-    <button onclick="saboro.home.teste()" id="teste">TESTE</button>
+<div class="uk-flex uk-flex-middle uk-flex-column uk-flex-center uk-margin-medium-top">
+    <i class="icone-logo-home"></i>
+    <p class="uk-margin-remove-top texto-destaque">Nenhuma receita cadastrada</p>
+    <p class="uk-margin-remove-top">Você ainda não possui receitas em seu sistema.</p>
+    <p class="uk-margin-remove-top">Deseja cadastrar sua primeira receita?</p>
+    <button onclick="saboro.home.getCadastroReceita()"
+        class="uk-flex uk-flex-middle uk-flex-center uk-border-rounded container-botao-adicionar-home">
+        <i class="icone-adicionar uk-margin-small-right"></i>
+        Cadastrar Receita
+    </button>
 </div>
 
-<script src="~/dist/home.entry.js" asp-append-version="true"></script>
+<script src="@Url.Content("~/dist/home.entry.js")" asp-append-version="true"></script>
+<script>
+    saboro.home.init({
+        message: @Html.Raw(Json.Serialize(new {
+            error = TempData["ErrorMessage"],
+            success = TempData["SuccessMessage"]
+        })),
+        urls: {
+            getCadastro: '@Url.Action("GetCadastrarReceita", "Receita")',
+        }
+    })
+</script>

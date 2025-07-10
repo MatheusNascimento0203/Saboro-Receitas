@@ -13,13 +13,14 @@ using Saboro.Web.ViewModels.Usuario;
 
 namespace Saboro.Web.Controllers;
 
-public class LoginController(INotification notification, IUsuarioRepository usuarioRepository, IUsuarioService usuarioService, IEmailHandler emailHandler, IEncryption encryption) : Controller
+public class LoginController(INotification notification, IUsuarioRepository usuarioRepository, IUsuarioService usuarioService, IEmailHandler emailHandler, IEncryption encryption, IReceitaRepository receitaRepository) : Controller
 {
     private readonly INotification _notification = notification;
     private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
     private readonly IUsuarioService _usuarioService = usuarioService;
     private readonly IEmailHandler _emailHandler = emailHandler;
     private readonly IEncryption _encryption = encryption;
+    private readonly IReceitaRepository _receitaRepository = receitaRepository;
 
     [HttpGet, Route("login")]
     public IActionResult Index() => View();
@@ -40,6 +41,7 @@ public class LoginController(INotification notification, IUsuarioRepository usua
             return RedirectToAction(nameof(Index));
         }
 
+        var usuarioPossuiReceitas = await _receitaRepository.BuscarReceitaPorUsuarioAsync(usuario.Id);
         var senhaValida = usuario.Senha.Equals(model.Senha.ToMd5Hash());
         if (senhaValida)
         {
@@ -56,7 +58,8 @@ public class LoginController(INotification notification, IUsuarioRepository usua
                 Id = usuario.Id,
                 NomeCompleto = nomeUsuario,
                 Email = usuario.Email,
-                ManterConectado = model.ManterConectado
+                ManterConectado = model.ManterConectado,
+                PossuiReceita = usuarioPossuiReceitas != null && usuarioPossuiReceitas.Any()
             };
 
             HttpContext.LogIn(usuarioCookie);
@@ -64,7 +67,16 @@ public class LoginController(INotification notification, IUsuarioRepository usua
             await _usuarioRepository.AtualizarAsync(usuario.Id, new { TentativasInvalidas = (short)0 });
 
             TempData.SuccessMessage("Login realizado com sucesso.");
-            return RedirectToAction("Index", "Home");
+
+            if (usuarioPossuiReceitas != null && usuarioPossuiReceitas.Any())
+            {
+                return RedirectToAction("Index", "Receita");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
         }
 
         // Senha inválida
