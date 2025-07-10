@@ -9,6 +9,7 @@ public class UsuarioCookie
     public string NomeCompleto { get; set; }
     public string Email { get; set; }
     public bool ManterConectado { get; set; }
+    public bool PossuiReceita { get; set; } = false;
 
 
     public string PrimeiroNome => NomeCompleto?.Split(' ').FirstOrDefault();
