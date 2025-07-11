@@ -30,6 +30,10 @@ module.exports = {
             import: "./src/pages/receita/index.ts",
             dependOn: ["izitoast", "jquery", "uikit"],
         },
+        usuario: {
+            import: "./src/pages/usuario/index.ts",
+            dependOn: ["izitoast", "jquery", "uikit"],
+        },
     },
     module: {
         rules: [

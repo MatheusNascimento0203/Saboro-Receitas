@@ -42,11 +42,15 @@
 
 /*! ../img/icone-alerta.png */
 
+/*! ../img/icone-calendario.png */
+
 /*! ../img/icone-duplo-user-receita.png */
 
 /*! ../img/icone-duplo-user.png */
 
 /*! ../img/icone-editar.png */
+
+/*! ../img/icone-email.png */
 
 /*! ../img/icone-excluir-passos-ingredientes.png */
 
@@ -104,6 +108,10 @@
   !*** ./src/components/toast.ts ***!
   \*********************************/
 
+/*!*********************************!*\
+  !*** ./src/img/icone-email.png ***!
+  \*********************************/
+
 /*!**********************************!*\
   !*** ./src/img/icone-alerta.png ***!
   \**********************************/
@@ -139,6 +147,10 @@
 /*!*************************************!*\
   !*** ./src/img/icone-logo-home.png ***!
   \*************************************/
+
+/*!**************************************!*\
+  !*** ./src/img/icone-calendario.png ***!
+  \**************************************/
 
 /*!**************************************!*\
   !*** ./src/img/icone-duplo-user.png ***!

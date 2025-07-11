@@ -1,0 +1,73 @@
+@model Saboro.Core.Models.Usuario;
+
+@{
+    var dataFormatada = Model.DataCadastro.ToString(
+        "dd 'de' MMMM 'de' yyyy",
+        new System.Globalization.CultureInfo("pt-BR")
+    );
+    var siglaPrimeiraLetra = Model.NomeCompleto.Substring(0, 1).ToUpper();
+    var totalReceitas = Model.Receitas?.Count() ?? 0;
+}
+
+<div class="uk-flex uk-flex-column uk-margin-medium-top uk-margin-medium-bottom container-principal-form">
+    <div class="uk-flex uk-flex-between uk-flex-middle uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top uk-border-rounded">
+        <div class="uk-flex">
+            <div class="uk-flex uk-flex-middle uk-flex-center container-user uk-margin-small-right">
+                <p class="uk-margin-remove-bottom uk-margin-remove-top">@siglaPrimeiraLetra</p>
+            </div>
+            <div>
+                <p class="uk-margin-remove-top uk-margin-remove-bottom nome-usuario">@Model.NomeCompleto</p>
+                <div class="uk-flex uk-flex-middle">
+                    <i class="icone-email"></i>
+                    <p class="uk-margin-remove-bottom uk-margin-remove-top font-grande">
+                        @Model.Email
+                    </p>
+                </div>
+                <div class="uk-flex uk-flex-middle">
+                    <i class="icone-calendario"></i>
+                    <p class="uk-margin-remove-bottom uk-margin-remove-top font-grande">
+                        Membro desde @dataFormatada
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <a href="@Url.Action("Editar", "Usuario")" class="uk-text-decoration-none">
+                <button class="uk-flex uk-flex-middle uk-border-rounded container-botao-padrao">
+                    <i class="icone-editar uk-margin-small-right"></i>
+                    Editar Perfil
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="uk-flex uk-flex-between gap-modal-exclusao">
+        <div
+            class="uk-flex uk-flex-column uk-flex-middle uk-card uk-card-default uk-card-hover uk-margin-small-top uk-border-rounded container-info-user">
+            <i class="icone-logo-header"></i>
+            <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">@totalReceitas</p>
+            <p class="uk-margin-remove-top uk-margin-remove-bottom">Receitas criadas</p>
+        </div>
+        <div
+            class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-margin-small-top uk-border-rounded container-info-user">
+            <h4 class="uk-margin-remove-top uk-margin-remove-bottom uk-bold">Modo de Preparo</h4>
+        </div>
+        <div
+            class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-margin-small-top uk-border-rounded container-info-user">
+            <h4 class="uk-margin-remove-top uk-margin-remove-bottom uk-bold">Modo de Preparo</h4>
+        </div>
+    </div>
+    <div
+        class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top uk-border-rounded">
+        <h4 class="uk-margin-remove-top uk-margin-remove-bottom uk-bold">Dicas do Chef</h4>
+        <div class="uk-flex dica-chef uk-padding-small uk-margin-small-top uk-border-rounded">
+            <p class="destaque-dica uk-margin-remove-top uk-margin-remove-bottom">Dica:</p>
+            <p class="uk-margin-remove-top uk-margin-remove-bottom">
+                Para uma lasanha ainda mais saborosa, deixe descansar na geladeira por algumas horas antes
+                de assar. Isso permite que os sabores se misturem melhor. Você também pode preparar no dia
+                anterior e assar no dia seguinte!
+            </p>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/dist/usuario.entry.js")" asp-append-version="true"></script>

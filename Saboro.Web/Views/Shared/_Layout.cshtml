@@ -31,17 +31,21 @@
     <header class="container-header uk-flex uk-flex-center uk-flex-middle uk-box-shadow-medium">
         <div class=" uk-flex uk-flex-middle uk-flex-between uk-width-1-1 uk-container uk-container-expand">
             <div class="uk-flex uk-flex-middle">
-                <a href='@(!usuario.PossuiReceita ? Url.Action("Index", "Home") : Url.Action("Index", "Receita"))' class="uk-flex uk-flex-middle uk-text-decoration-none">
+                <a href='@(!usuario.PossuiReceita ? Url.Action("Index", "Home") : Url.Action("Index", "Receita"))'
+                    class="uk-flex uk-flex-middle uk-text-decoration-none">
                     <i class="icone-logo-header"></i>
                     <p class="uk-margin-remove-top uk-margin-remove-bottom titulo-header">Saboro</p>
                 </a>
             </div>
             <div class="uk-flex uk-flex-middle uk-flex-right">
                 <p class="uk-margin-remove-bottom uk-margin-small-right">Olá, @nomeUsuario</p>
-                <button class="uk-flex uk-flex-middle uk-border-rounded uk-margin-small-right container-botao-padrao">
-                    <i class="icone-user uk-margin-small-right"></i>
-                    Minhas informações
-                </button>
+                <a href='@Url.Action("Index", "Usuario")' class="uk-text-decoration-none" >
+                    <button
+                        class="uk-flex uk-flex-middle uk-border-rounded uk-margin-small-right container-botao-padrao">
+                        <i class="icone-user uk-margin-small-right"></i>
+                        Minhas informações
+                    </button>
+                </a>
                 <a href='@Url.Action("Logout", "Home")' class="uk-text-decoration-none">
                     <button class="uk-flex uk-flex-middle uk-border-rounded container-botao-padrao">
                         <i class="icone-logout uk-margin-small-right"></i>
