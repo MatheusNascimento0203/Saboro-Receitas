@@ -59,7 +59,7 @@
                         class="icone-excluir"></i></button>
             </div>
             @* MODAL VISUALIZAÇÃO DA RECEITA *@
-            <div id="modal-visualizar-receita-@item.Id" uk-modal="esc-close: false; bg-close: false;">
+            <div id="modal-visualizar-receita-@item.Id" uk-modal="esc-close: false; bg-close: false;"  onshow="saboro.receita.carregarDicaDoChef(@item.Id)">
                 <div class="uk-modal-dialog uk-modal-body uk-border-rounded uk-margin-auto-vertical modal-visualizar-receita">
                     <button class="uk-modal-close-default uk-text-bold text-black" type="button" uk-close></button>
                     <div class="uk-flex uk-flex-column">
@@ -117,13 +117,17 @@
                             </div>
                         </div>
                         <div class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top uk-border-rounded">
-                            <h4 class="uk-margin-remove-top uk-margin-remove-bottom uk-bold">Dicas do Chef</h4>
+                            <div class="uk-flex uk-flex-between uk-flex-middle">
+                                <h4 class="uk-margin-remove-top uk-margin-remove-bottom uk-bold">Dicas do Chef</h4>
+                                <button type="button"
+                                class="uk-button uk-button-default uk-margin-small-top"
+                                onclick="saboro.receita.gerarDicaDoChef(@item.Id)">
+                                Gerar dica do chef
+                                </button>
+                            </div>
                             <div class="uk-flex dica-chef uk-padding-small uk-margin-small-top uk-border-rounded">
                                 <p class="destaque-dica uk-margin-remove-top uk-margin-remove-bottom">Dica:</p>
-                                <p class="uk-margin-remove-top uk-margin-remove-bottom">
-                                    Para uma lasanha ainda mais saborosa, deixe descansar na geladeira por algumas horas antes
-                                    de assar. Isso permite que os sabores se misturem melhor. Você também pode preparar no dia
-                                    anterior e assar no dia seguinte!
+                                <p id="dica-chef-texto-@item.Id" class="uk-margin-remove-top uk-margin-remove-bottom">
                                 </p>
                             </div>
                         </div>

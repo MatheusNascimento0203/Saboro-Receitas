@@ -38,6 +38,7 @@ public static class DependencyInjection
     {
         services.AddMemoryCache();
         services.AddScoped<IUsuarioService, UsuarioService>();
+        services.AddHttpClient<IGeminiService, GeminiService>();
     }
 }
 

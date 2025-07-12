@@ -18,6 +18,7 @@ builder.Services.AddDependencies(appSettings);
 builder.Services.AddHttpClient();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddHttpContextAccessor();
+builder.Services.Configure<GeminiSettings>(builder.Configuration.GetSection("Gemini"));
 
 var app = builder.Build();
 

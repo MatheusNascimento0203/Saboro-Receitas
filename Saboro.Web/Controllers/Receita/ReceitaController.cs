@@ -2,20 +2,23 @@ using Microsoft.AspNetCore.Mvc;
 using Saboro.Core.Helpers;
 using Saboro.Core.Interfaces.Helpers;
 using Saboro.Core.Interfaces.Repositories;
+using Saboro.Core.Interfaces.Services;
 using Saboro.Core.Models;
 using Saboro.Web.Extensions;
+using Saboro.Web.ViewModels.Receitadetalhes;
 using Saboro.Web.ViewModels.Receitas;
 
 namespace Saboro.Web.Controllers.Receita;
 
 [Route("/receita")]
-public class ReceitaController(INotification notification, ICategoriaFavoritaRepository categoriaFavoritaRepository, IDificuldadeReceitaRepository dificuldadeReceitaRepository, IReceitaRepository receitaRepository, IUsuarioRepository usuarioRepository) : Controller
+public class ReceitaController(INotification notification, ICategoriaFavoritaRepository categoriaFavoritaRepository, IDificuldadeReceitaRepository dificuldadeReceitaRepository, IReceitaRepository receitaRepository, IUsuarioRepository usuarioRepository, IGeminiService geminiService) : Controller
 {
     private readonly ICategoriaFavoritaRepository _categoriaFavoritaRepository = categoriaFavoritaRepository;
     private readonly IDificuldadeReceitaRepository _dificuldadeReceitaRepository = dificuldadeReceitaRepository;
     private readonly IReceitaRepository _receitaRepository = receitaRepository;
     private readonly INotification _notification = notification;
     private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
+    private readonly IGeminiService _geminiService = geminiService;
     [HttpGet("lista-receita")]
     public async Task<IActionResult> Index()
     {
@@ -200,5 +203,25 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
         await _receitaRepository.AtualizarAsync(id, receita);
 
         return Ok("Receita atualizada com sucesso!");
+    }
+    [HttpGet("dica-do-chef/{id}")]
+    public async Task<IActionResult> ObterDicaDoChef(int id)
+    {
+        try
+        {
+            var receita = await _receitaRepository.BuscarReceitaPorIdAsync(id);
+            if (receita == null)
+                return NotFound("Receita não encontrada.");
+
+            var dica = await _geminiService.ObterDicaDoChefAsync(
+                receita.TituloReceita
+            );
+
+            return Json(new { dica });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
+        }
     }
 }

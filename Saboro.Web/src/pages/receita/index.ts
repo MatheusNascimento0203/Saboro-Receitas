@@ -239,6 +239,7 @@ export function excluirReceita(url: string, id: number) {
 
 export function visualizarReceita(id: number) {
     UIkit.modal(`#modal-visualizar-receita-${id}`).show();
+    carregarDicaDoChef(id);
 }
 
 export function buscarReceita() {
@@ -249,12 +250,13 @@ export function buscarReceita() {
         console.log(termo);
 
         if (termo.length >= 3 || termo.length === 0) {
-            const query = termo.length === 0 ? "" : `?nome=${encodeURIComponent(termo)}`;
+            const query =
+                termo.length === 0 ? "" : `?nome=${encodeURIComponent(termo)}`;
 
-            $.get(`${url}${query}`)            
+            $.get(`${url}${query}`)
                 .done(function (html) {
                     $("#resultado-busca").html(html);
-                    console.log($("#resultado-busca").length)
+                    console.log($("#resultado-busca").length);
                 })
                 .fail(function (err) {
                     console.error(err.responseText);
@@ -262,3 +264,45 @@ export function buscarReceita() {
         }
     });
 }
+
+export function gerarDicaDoChef(id) {
+    const dicaEl = document.getElementById(`dica-chef-texto-${id}`);
+    dicaEl.innerText = "Gerando dica...";
+
+    fetch(`/receita/dica-do-chef/${id}`)
+        .then((res) => {
+            if (!res.ok) throw new Error("Erro ao buscar dica");
+            return res.json();
+        })
+        .then((data) => {
+            dicaEl.innerText = data.dica;
+            localStorage.setItem(`dica-chef-${id}`, data.dica);
+        })
+        .catch((erro) => {
+            Toast.error(erro);
+            dicaEl.innerText = "Não foi possível gerar a dica no momento.";
+        });
+}
+
+export function carregarDicaDoChef(id) {
+    const dicaEl = document.getElementById(`dica-chef-texto-${id}`);
+    const dicaSalva = localStorage.getItem(`dica-chef-${id}`);
+    if (dicaSalva) {
+        dicaEl.innerText = dicaSalva;
+    } else {
+        dicaEl.innerText =
+            "Clique em 'Gerar dica do chef' para obter uma sugestão!";
+    }
+}
+
+// document.addEventListener('DOMContentLoaded', function () {
+//     // Usa os eventos corretos do UIkit para "show" do modal
+//     UIkit.util.on(document, 'show', function (event) {
+//         const modalEl = event.target;
+
+//         if (!modalEl || !modalEl.id?.startsWith('modal-visualizar-receita-')) return;
+
+//         const id = modalEl.id.replace("modal-visualizar-receita-", "");
+//         carregarDicaDoChef(parseInt(id));
+//     });
+// });
