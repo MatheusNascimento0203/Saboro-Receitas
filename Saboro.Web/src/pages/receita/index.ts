@@ -265,7 +265,7 @@ export function buscarReceita() {
     });
 }
 
-export function gerarDicaDoChef(id) {
+export function gerarDicaDoChef(id: number) {
     const dicaEl = document.getElementById(`dica-chef-texto-${id}`);
     dicaEl.innerText = "Gerando dica...";
 
@@ -284,7 +284,7 @@ export function gerarDicaDoChef(id) {
         });
 }
 
-export function carregarDicaDoChef(id) {
+export function carregarDicaDoChef(id: number) {
     const dicaEl = document.getElementById(`dica-chef-texto-${id}`);
     const dicaSalva = localStorage.getItem(`dica-chef-${id}`);
     if (dicaSalva) {
@@ -295,14 +295,3 @@ export function carregarDicaDoChef(id) {
     }
 }
 
-// document.addEventListener('DOMContentLoaded', function () {
-//     // Usa os eventos corretos do UIkit para "show" do modal
-//     UIkit.util.on(document, 'show', function (event) {
-//         const modalEl = event.target;
-
-//         if (!modalEl || !modalEl.id?.startsWith('modal-visualizar-receita-')) return;
-
-//         const id = modalEl.id.replace("modal-visualizar-receita-", "");
-//         carregarDicaDoChef(parseInt(id));
-//     });
-// });
