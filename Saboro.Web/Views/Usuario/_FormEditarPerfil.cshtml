@@ -1,0 +1,112 @@
+@model Saboro.Core.Models.Usuario;
+
+@{
+    Layout = null;
+    var idSelecionado = Model?.IdCategoriaFavorita ?? 0;
+    var idNivelSelecionado = Model?.IdNivelCulinario ?? 0;
+}
+
+@if (Model != null)
+{
+    <div id="modal-editar-Perfil" uk-modal="esc-close: false; bg-close: false;">
+        <div class="uk-modal-dialog uk-modal-body uk-border-rounded uk-margin-auto-vertical">
+            <button class="uk-modal-close-default uk-text-bold text-black" type="button" uk-close></button>
+            <form>
+                <div class="uk-flex uk-flex-middle">
+                    <div class="uk-flex uk-flex-column gap-modal-exclusao">
+                        <h4 class="uk-text-bold uk-margin-remove">Informações Pessoais</h4>
+                        <div class="uk-flex uk-flex-middle gap-input">
+                            <div>
+                                <label class="uk-form-label uk-text-bold uk-text-small">Nome Completo<span
+                                        class="icone-obrigatorio">*</span></label>
+                                <div
+                                    class="uk-form-controls uk-padding-remove-top uk-padding-remove-left uk-padding-remove-right uk-padding-small ">
+                                    <input class="uk-input uk-border-rounded focus-input" type="text" name="NomeCompleto"
+                                        id="nome-completo" placeholder="Insira o Nome completo" value="@Model.NomeCompleto"
+                                        data-rules="required" />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="uk-form-label uk-text-bold uk-text-small">E-mail<span
+                                        class="icone-obrigatorio">*</span></label>
+                                <div
+                                    class="uk-form-controls uk-padding-remove-top uk-padding-remove-left uk-padding-remove-right uk-padding-small ">
+                                    <input class="uk-input uk-border-rounded focus-input" type="text" name="Email"
+                                        id="email" placeholder="Insira o Email" value="@Model.Email"
+                                        data-rules="required" />
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label
+                                class="uk-form-label uk-text-bold uk-text-small uk-padding-remove-top uk-padding-remove-bottom uk-padding-remove-right ">Biografia<span
+                                    class="icone-obrigatorio">*</span></label>
+                            <div class="uk-form-controls uk-padding-remove-top uk-padding-remove-right">
+                                <textarea class="uk-border-rounded uk-textarea focus-textarea" id="biografia"
+                                name="Biografia" rows="5" cols="50"
+                                placeholder="Insira a sua biografia">@Model.Biografia</textarea>
+                            </div>
+                        </div>
+                        <div class="uk-flex gap-input uk-margin-small-top">
+                            <div class="uk-width-1-2">
+                                <label class="uk-form-label uk-text-bold uk-text-small">Categoria Favorita<span
+                                        class="icone-obrigatorio">*</span></label>
+                                <div class="uk-form-controls">
+                                    <select class="uk-select uk-border-rounded focus-select" name="IdCategoriaFavorita"
+                                        id="id-categoria-favorita">
+                                        <option value="0">Selecione a Categoria</option>
+                                        @if (ViewBag.CategoriaFavorita != null)
+                                        {
+                                            foreach (var categorias in ViewBag.CategoriaFavorita)
+                                            {
+                                                <option value="@categorias.Id"
+                                                    selected="@(categorias.Id == idSelecionado ? "selected" : null)">
+                                                    @categorias.NomeCategoria
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="uk-width-1-2">
+                                <label class="uk-form-label uk-text-bold uk-text-small">Nível Culinário<span
+                                        class="icone-obrigatorio">*</span></label>
+                                <div class="uk-form-controls">
+                                    <select class="uk-select uk-border-rounded focus-select" name="IdNivelCulinario"
+                                        id="id-nivel-culinario">
+                                        <option value="0">Selecione o Nível</option>
+                                        @if (ViewBag.NivelCulinario != null)
+                                        {
+                                            foreach (var niveisCulinario in ViewBag.NivelCulinario)
+                                            {
+                                                <option value="@niveisCulinario.Id"
+                                                    selected="@(niveisCulinario.Id == idNivelSelecionado ? "selected" : null)">
+                                                    @niveisCulinario.NomeNivel
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-flex uk-flex-end uk-margin-small-top">
+                    <button id="cancelar-exclusao-receita-"
+                        class="tamanho-altura-padrao container-botao-padrao uk-text-center uk-padding-small uk-margin-small-right uk-padding-remove-top uk-padding-remove-bottom uk-flex uk-flex-middle uk-flex-center uk-border-rounded"
+                        type="button">Cancelar</button>
+                    <button id="confirmar-exclusao-receita-"
+                        class="tamanho-altura-padrao container-botao-padrao uk-padding-small uk-padding-remove-top uk-padding-remove-bottom uk-background-primary uk-flex uk-flex-middle uk-flex-center uk-border-rounded"
+                        type="button">Confirmar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="uk-text-center uk-margin-medium-top">
+        <p>Usuário não encontrado.</p>
+    </div>
+}

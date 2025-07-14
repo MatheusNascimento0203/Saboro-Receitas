@@ -31,7 +31,7 @@ public static class DependencyInjection
         services.AddScoped<ICategoriaFavoritaRepository, CategoriaFavoritaRepository>();
         services.AddScoped<IDificuldadeReceitaRepository, DificuldadeReceitaRepository>();
         services.AddScoped<IReceitaRepository, ReceitaRepository>();
-
+        services.AddScoped<INivelCulinarioRepository, NivelCulinarioRepository>();
     }
 
     public static void AddServices(this IServiceCollection services)

@@ -69,6 +69,7 @@ public class UsuarioRepository(ApplicationDbContext dbContext) : BaseRepository(
         return await _dbContext.Usuarios
             .Include(u => u.CategoriaFavorita)
             .Include(u => u.NivelCulinario)
+            .Include(u => u.Receitas)
             .Select(u => new Usuario
             {
                 Id = u.Id,
@@ -82,6 +83,7 @@ public class UsuarioRepository(ApplicationDbContext dbContext) : BaseRepository(
                 DataCadastro = u.DataCadastro,
                 DataUltimaAlteracao = u.DataUltimaAlteracao,
 
+                Receitas = u.Receitas.ToList()
             }).FirstOrDefaultAsync(u => u.Id == id);
     }
 
