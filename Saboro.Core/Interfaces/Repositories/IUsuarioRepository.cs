@@ -11,6 +11,6 @@ public interface IUsuarioRepository : IBaseRepository
     Task<Usuario> BuscarNomePeloIdAsync(int idUsuario);
     Task AtualizarAsync(int id, object modifiedFields);
     Task AdicionarAsync(Usuario usuario);
-    Task RemoverAsync(Usuario usuario);
+    Task RemoverAsync(int id);
     Task<bool> EmailJaExistenteAsync(string email, int? idUsuarioAtual = null);
 }

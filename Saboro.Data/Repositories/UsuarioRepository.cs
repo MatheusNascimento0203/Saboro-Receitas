@@ -69,12 +69,14 @@ public class UsuarioRepository(ApplicationDbContext dbContext) : BaseRepository(
         return await _dbContext.Usuarios
             .Include(u => u.CategoriaFavorita)
             .Include(u => u.NivelCulinario)
-            .Include(u => u.Receitas)
+            .Include(u => u.Receitas).ThenInclude(i => i.Ingredientes)
+            .Include(u => u.Receitas).ThenInclude(md => md.ModoPreparoReceitas)
             .Select(u => new Usuario
             {
                 Id = u.Id,
                 IdCategoriaFavorita = u.IdCategoriaFavorita,
                 IdNivelCulinario = u.IdNivelCulinario,
+                IdUsuarioStatus = u.IdUsuarioStatus,
                 NomeCompleto = u.NomeCompleto,
                 Email = u.Email,
                 Biografia = u.Biografia,
@@ -82,8 +84,11 @@ public class UsuarioRepository(ApplicationDbContext dbContext) : BaseRepository(
                 UsuarioUltimaAlteracao = u.UsuarioUltimaAlteracao,
                 DataCadastro = u.DataCadastro,
                 DataUltimaAlteracao = u.DataUltimaAlteracao,
+                Senha = u.Senha,
 
-                Receitas = u.Receitas.ToList()
+                Receitas = u.Receitas.ToList(),
+                CategoriaFavorita = u.CategoriaFavorita,
+                NivelCulinario = u.NivelCulinario
             }).FirstOrDefaultAsync(u => u.Id == id);
     }
 
@@ -93,8 +98,24 @@ public class UsuarioRepository(ApplicationDbContext dbContext) : BaseRepository(
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task RemoverAsync(Usuario usuario)
+    public async Task RemoverAsync(int id)
     {
+        var usuario = await BuscarAsync(id) ?? throw new Exception("Usuário não encontrado.");
+
+        if (usuario.Receitas != null && usuario.Receitas.Any())
+        {
+            foreach (var receita in usuario.Receitas)
+            {
+                if (receita.Ingredientes != null && receita.Ingredientes.Any())
+                    _dbContext.Ingredientes.RemoveRange(receita.Ingredientes);
+
+                if (receita.ModoPreparoReceitas != null && receita.ModoPreparoReceitas.Any())
+                    _dbContext.ModosPreparoReceitas.RemoveRange(receita.ModoPreparoReceitas);
+            }
+
+            _dbContext.Receitas.RemoveRange(usuario.Receitas);
+        }
+
         _dbContext.Remove(usuario);
         await _dbContext.SaveChangesAsync();
     }

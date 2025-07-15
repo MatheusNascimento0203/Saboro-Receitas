@@ -7,102 +7,153 @@
     );
     var siglaPrimeiraLetra = Model.NomeCompleto.Substring(0, 1).ToUpper();
     var totalReceitas = Model.Receitas?.Count() ?? 0;
+    var nivelCulinario = Model.NivelCulinario?.NomeNivel ?? "Nenhum nível culinário informado";
+    var classeCor = nivelCulinario switch
+    {
+        "Iniciante" => "badge-iniciante",
+        "Intermediário" => "badge-intermediario",
+        "Avançado" => "badge-avancado",
+        _ => "badge-sem-nivel"
+    };
 }
 
-<div class="uk-flex uk-flex-column uk-margin-medium-top uk-margin-medium-bottom container-principal-form">
-    <div
-        class="uk-flex uk-flex-between uk-flex-middle uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top uk-border-rounded">
-        <div class="uk-flex">
-            <div class="uk-flex uk-flex-middle uk-flex-center container-user uk-margin-small-right">
-                <p class="uk-margin-remove-bottom uk-margin-remove-top">@siglaPrimeiraLetra</p>
+<div class="uk-flex uk-flex-center uk-margin-medium-top uk-margin-medium-bottom ">
+    <div class="uk-flex uk-flex-column">
+        <div
+            class="uk-flex uk-flex-between uk-flex-middle uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top uk-border-rounded">
+            <div class="uk-flex">
+                <div class="uk-flex uk-flex-middle uk-flex-center container-user uk-margin-small-right">
+                    <p class="uk-margin-remove-bottom uk-margin-remove-top">@siglaPrimeiraLetra</p>
+                </div>
+                <div>
+                    <p class="uk-margin-remove-top uk-margin-remove-bottom nome-usuario">@Model.NomeCompleto</p>
+                    <div class="uk-flex uk-flex-middle">
+                        <i class="icone-email"></i>
+                        <p class="uk-margin-remove-bottom uk-margin-remove-top font-grande">
+                            @Model.Email
+                        </p>
+                    </div>
+                    <div class="uk-flex uk-flex-middle">
+                        <i class="icone-calendario"></i>
+                        <p class="uk-margin-remove-bottom uk-margin-remove-top font-grande">
+                            Membro desde @dataFormatada
+                        </p>
+                    </div>
+                </div>
             </div>
             <div>
-                <p class="uk-margin-remove-top uk-margin-remove-bottom nome-usuario">@Model.NomeCompleto</p>
-                <div class="uk-flex uk-flex-middle">
-                    <i class="icone-email"></i>
-                    <p class="uk-margin-remove-bottom uk-margin-remove-top font-grande">
-                        @Model.Email
+                <button onclick="saboro.usuario.getEditarPerfil()" class="uk-flex uk-flex-middle uk-border-rounded container-botao-padrao">
+                    <i class="icone-editar uk-margin-small-right"></i>
+                    Editar Perfil
+                </button>
+            </div>
+        </div>
+        <div class="uk-flex uk-flex-between gap-modal-exclusao">
+            <div
+                class="uk-flex uk-flex-column uk-flex-middle uk-card uk-card-default uk-card-hover uk-margin-small-top uk-border-rounded container-info-user">
+                <i class="icone-logo-header"></i>
+                <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">@totalReceitas</p>
+                <p class="uk-margin-remove-top uk-margin-remove-bottom">Receitas criadas</p>
+            </div>
+            <div
+                class="uk-flex uk-flex-column uk-flex-middle uk-card uk-card-default uk-card-hover uk-margin-small-top uk-border-rounded container-info-user">
+                <p class="uk-margin-remove-top uk-margin-small-bottom">Nivel Culinário</p>
+                <div class="badge @classeCor">
+                    <p class="uk-margin-remove-top uk-margin-remove-bottom">
+                        @(Model.IdNivelCulinario != null ? Model.NivelCulinario.NomeNivel : "Não Definido")
                     </p>
                 </div>
-                <div class="uk-flex uk-flex-middle">
-                    <i class="icone-calendario"></i>
-                    <p class="uk-margin-remove-bottom uk-margin-remove-top font-grande">
-                        Membro desde @dataFormatada
+            </div>
+            <div
+                class="uk-flex uk-flex-column uk-flex-middle uk-card uk-card-default uk-card-hover uk-margin-small-top uk-border-rounded container-info-user">
+                <p class="uk-margin-remove-top uk-margin-small-bottom">Categoria Favorita</p>
+                <div class="badge-tipo-receita">                            
+                    <p class="uk-margin-remove-top uk-margin-remove-bottom">
+                        @(Model.IdCategoriaFavorita != null ? Model.CategoriaFavorita.NomeCategoria : "Não Definido")
                     </p>
                 </div>
             </div>
         </div>
-        <div>
-            <button onclick="saboro.usuario.getEditarPerfil()" class="uk-flex uk-flex-middle uk-border-rounded container-botao-padrao">
-                <i class="icone-editar uk-margin-small-right"></i>
-                Editar Perfil
-            </button>
-        </div>
-    </div>
-    <div class="uk-flex uk-flex-between gap-modal-exclusao">
         <div
-            class="uk-flex uk-flex-column uk-flex-middle uk-card uk-card-default uk-card-hover uk-margin-small-top uk-border-rounded container-info-user">
-            <i class="icone-logo-header"></i>
-            <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">@totalReceitas</p>
-            <p class="uk-margin-remove-top uk-margin-remove-bottom">Receitas criadas</p>
-        </div>
-        <div
-            class="uk-flex uk-flex-column uk-flex-middle uk-card uk-card-default uk-card-hover uk-margin-small-top uk-border-rounded container-info-user">
-            <h4 class="uk-margin-remove-top uk-margin-remove-bottom uk-bold">Nivel Culinário</h4>
-        </div>
-        <div
-            class="uk-flex uk-flex-column uk-flex-middle uk-card uk-card-default uk-card-hover uk-margin-small-top uk-border-rounded container-info-user">
-            <h4 class="uk-margin-remove-top uk-margin-remove-bottom uk-bold">Categoria Favorita</h4>
-        </div>
-    </div>
-    <div
-        class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top uk-border-rounded">
-        <h4 class="uk-margin-remove-top uk-margin-remove-bottom font-escuro">Informações Pessoais</h4>
-        <p class="uk-margin-remove-top uk-margin-remove-bottom">Suas Informações Pessoais</p>
-        <div class="uk-margin-small-top">
-            <div class="uk-flex">
-                <div class="uk-width-1-2">
-                    <label for="nomeCompleto" class="font-escuro-v2 ">Nome Completo</label>
-                    <p class="uk-margin-remove-top uk-margin-remove-bottom uk-margin-small-top">@Model.NomeCompleto</p>
-                </div>
-                <div class="">
-                    <label for="email" class="font-escuro-v2">E-mail</label>
-                    <p class="uk-margin-remove-top uk-margin-remove-bottom uk-margin-small-top">@Model.Email</p>
-                </div>
-            </div>
+            class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top uk-border-rounded">
+            <h4 class="uk-margin-remove-top uk-margin-remove-bottom font-escuro">Informações Pessoais</h4>
+            <p class="uk-margin-remove-top uk-margin-remove-bottom">Suas Informações Pessoais</p>
             <div class="uk-margin-small-top">
-                <label for="biografia" class="font-escuro-v2">Biografia</label>
-                <p class="uk-margin-remove-top uk-margin-remove-bottom uk-margin-small-top">
-                    @(string.IsNullOrEmpty(Model.Biografia) ? "Nenhuma biografia informada." : Model.Biografia)
-                </p>
-            </div>
-            <div class="uk-flex uk-margin-small-top">
-                <div class="uk-width-1-2">
-                    <label for="categoriaFavorita" class="font-escuro-v2 ">Categoria Favorita</label>
+                <div class="uk-flex">
+                    <div class="uk-width-1-2">
+                        <label for="nomeCompleto" class="font-escuro-v2 ">Nome Completo</label>
+                        <p class="uk-margin-remove-top uk-margin-remove-bottom uk-margin-small-top">@Model.NomeCompleto</p>
+                    </div>
+                    <div class="">
+                        <label for="email" class="font-escuro-v2">E-mail</label>
+                        <p class="uk-margin-remove-top uk-margin-remove-bottom uk-margin-small-top">@Model.Email</p>
+                    </div>
+                </div>
+                <div class="uk-margin-small-top">
+                    <label for="biografia" class="font-escuro-v2">Biografia</label>
                     <p class="uk-margin-remove-top uk-margin-remove-bottom uk-margin-small-top">
-                        @(Model.CategoriaFavorita != null ? Model.CategoriaFavorita.NomeCategoria : "Nenhuma categoria favorita informada.")
+                        @(string.IsNullOrEmpty(Model.Biografia) ? "Nenhuma biografia informada." : Model.Biografia)
                     </p>
                 </div>
-                <div class="">
-                    <label for="nivelCulinario" class="font-escuro-v2">Nivel Culinário</label>
-                    <p class="uk-margin-remove-top uk-margin-remove-bottom uk-margin-small-top">
-                        @(Model.NivelCulinario != null ? Model.NivelCulinario.NomeNivel : "Nenhum nível culinário informado.")
-                    </p>
+                <div class="uk-flex uk-margin-small-top">
+                    <div class="uk-width-1-2 uk-flex uk-flex-column">
+                        <label for="categoriaFavorita" class="font-escuro-v2 ">Categoria Favorita</label>
+                        <div class="badge-tipo-receita">                            
+                            <p class="uk-margin-remove-top uk-margin-remove-bottom uk-margin-small-top">
+                                @(Model.IdCategoriaFavorita != null ? Model.CategoriaFavorita.NomeCategoria : "Nenhuma categoria favorita informada.")
+                            </p>
+                        </div>
+                    </div>
+                    <div class="uk-flex uk-flex-column">
+                        <label for="nivelCulinario" class="font-escuro-v2">Nivel Culinário</label>
+                        <div class="badge @classeCor">
+                            <p class="uk-margin-remove-top uk-margin-remove-bottom uk-margin-small-top">
+                                @(Model.IdNivelCulinario != null ? Model.NivelCulinario.NomeNivel : "Nenhum nível culinário informado.")
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div
-        class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top uk-border-rounded">
-        <h4 class="uk-margin-remove-top uk-margin-remove-bottom font-escuro">Configurações da Conta</h4>
-        <p class="uk-margin-remove-top uk-margin-remove-bottom">Gerencie suas preferências de conta</p>
-        <div class="uk-margin-small-top">
-            <button class="uk-border-rounded container-botao-padrao">Alterar Senha</button>
-            <button class="uk-margin-small-left uk-border-rounded container-botao-padrao btn-excluir-conta">Excluir Conta</button>
+        <div
+            class="uk-flex uk-flex-column uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-small-top uk-border-rounded">
+            <h4 class="uk-margin-remove-top uk-margin-remove-bottom font-escuro">Configurações da Conta</h4>
+            <p class="uk-margin-remove-top uk-margin-remove-bottom">Gerencie suas preferências de conta</p>
+            <div class="uk-margin-small-top">
+                <button onclick="saboro.usuario.getAlterarSenha()" class="uk-border-rounded container-botao-padrao">Alterar Senha</button>
+                <button onclick="saboro.usuario.excluirReceita('@Url.Action("DeleteExcluirUsuario", "Usuario")')" class="uk-margin-small-left uk-border-rounded container-botao-padrao btn-excluir-conta">Excluir Conta</button>
+            </div>
         </div>
-    </div>
         <div id="form-editar-perfil">
-        @await Html.PartialAsync("_FormEditarPerfil")
+            @await Html.PartialAsync("_FormEditarPerfil")
+        </div>
+        <div id="form-alterar-senha">
+            @await Html.PartialAsync("_FormAlterarSenha")
+        </div>
+        @* MODAL CONFIRMAR EXCLUSÃO *@
+        <div id="modal-confirmacao-exclusao-usuário" uk-modal="esc-close: false; bg-close: false;">
+            <div class="uk-modal-dialog uk-modal-body uk-border-rounded uk-margin-auto-vertical modal-confirmar-exclusao">
+                <button class="uk-modal-close-default uk-text-bold text-black" type="button" uk-close></button>
+                <div class="uk-flex uk-flex-middle">
+                    <i class="icone-alerta uk-margin-right"></i>
+                    <div class="uk-flex uk-flex-column uk-flex-middle uk-flex-center  gap-modal-exclusao">
+                        <h4 class="uk-text-bold uk-margin-remove">Tem certeza que deseja excluir essa conta?</h4>
+                        <p class="uk-margin-remove-top uk-margin-remove-bottom titulo-receita-modal-confirmacao-exclusao">
+                            (@Model.NomeCompleto)</p>
+                        <p class="uk-text-danger uk-margin-remove">Esta ação não pode ser desfeita!</p>
+                    </div>
+                </div>
+                <div class="uk-flex uk-flex-center uk-margin-small-top">
+                    <button id="cancelar-exclusao-usuario"
+                        class="tamanho-altura-padrao btn-cancelar-exclusao uk-text-center uk-padding-small uk-margin-small-right uk-padding-remove-top uk-padding-remove-bottom uk-flex uk-flex-middle uk-flex-center uk-border-rounded"
+                        type="button">Cancelar</button>
+                    <button id="confirmar-exclusao-usuario"
+                        class="tamanho-altura-padrao btn-confirmar-exclusao uk-padding-small uk-padding-remove-top uk-padding-remove-bottom uk-background-primary uk-flex uk-flex-middle uk-flex-center uk-border-rounded"
+                        type="button">Confirmar
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -110,7 +161,9 @@
 <script>
     saboro.usuario.init({
         urls: {
-            getEditarPerfilUrl: '@Url.Action("GetEditarPerfil", "Usuario")',
+            formEditarPerfil: '@Url.Action("GetEditarPerfil", "Usuario")',
+            formAlterarSenha: '@Url.Action("GetAlterarSenha", "Usuario")',
+            indexLogin: '@Url.Action("Index", "Login")',
         }
-    })
+    });
 </script>
