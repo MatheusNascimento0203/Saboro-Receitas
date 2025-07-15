@@ -4,11 +4,13 @@
     ViewData["Title"] = "Editar Receita";
 }
 
-<div class="uk-margin-medium-top uk-margin-medium-bottom container-principal-form">
+<div class="uk-flex uk-flex-center uk-margin-medium-top uk-margin-medium-bottom"">
+    <div class=" uk-flex uk-flex-column container-principal-form uk-card uk-card-default">
     <div class="uk-margin-small-left uk-margin-small-top">
         <h2>Editar Receita - @Model.TituloReceita</h2>
     </div>
-    <form onsubmit="event.preventDefault(); saboro.receita.editarReceita(this, '@Url.Action("PostEditarReceita", "Receita", new {id = @Model.Id})')">
+    <form
+        onsubmit="event.preventDefault(); saboro.receita.editarReceita(this, '@Url.Action("PostEditarReceita", "Receita", new {id = @Model.Id})')">
         <div class="uk-flex uk-flex-middle gap-input uk-margin-small-left uk-margin-small-right">
             <div class="uk-flex uk-flex-column uk-width-1-2">
                 <label class="uk-form-label uk-text-bold uk-text-small">Titulo da Receita<span
@@ -154,6 +156,7 @@
                 <button class="btn-salvar uk-border-rounded">Salvar Alterações</button>
             </div>
     </form>
+</div>
 </div>
 <script src="@Url.Content("~/dist/receita.entry.js")" asp-append-version="true"></script>
 <script>

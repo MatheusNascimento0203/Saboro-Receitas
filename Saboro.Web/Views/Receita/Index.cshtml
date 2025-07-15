@@ -33,22 +33,22 @@
         var tempoMedio = (int)Model.Average(r => r.TempoPreparo);
         var totalPorcoes = Model.Sum(r => r.QtdPorcoes);
 
-        <div class="container-card-informacoes">
-            <div class="card-informacoes uk-flex uk-flex-middle">
+        <div class="container-card-informacoes ">
+            <div class="card-informacoes uk-flex uk-flex-middle uk-card uk-card-default">
                 <i class="icone-logo-header uk-margin-medium-left"></i>
                 <div class="uk-margin-small-left">
                     <p class="uk-margin-remove-bottom texto-informacoes">Total de Receitas</p>
                     <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">@totalReceitas</p>
                 </div>
             </div>
-            <div class="card-informacoes uk-flex uk-flex-middle">
+            <div class="card-informacoes uk-flex uk-flex-middle uk-card uk-card-default">
                 <i class="icone-relogio-info uk-margin-medium-left"></i>
                 <div class="uk-margin-small-left">
                     <p class="uk-margin-remove-bottom texto-informacoes">Tempo Médio</p>
                     <p class="uk-margin-remove-top uk-margin-remove-bottom resultado-informacoes">@tempoMedio min</p>
                 </div>
             </div>
-            <div class="card-informacoes uk-flex uk-flex-middle">
+            <div class="card-informacoes uk-flex uk-flex-middle uk-card uk-card-default">
                 <i class="icone-duplo-user uk-margin-medium-left"></i>
                 <div class="uk-margin-small-left">
                     <p class="uk-margin-remove-bottom texto-informacoes">Porções Totais</p>
