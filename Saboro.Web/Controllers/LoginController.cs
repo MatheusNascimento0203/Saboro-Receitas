@@ -8,6 +8,7 @@ using Saboro.Core.Interfaces.Helpers.Email;
 using Saboro.Core.Interfaces.Repositories;
 using Saboro.Core.Interfaces.Services;
 using Saboro.Core.Models;
+using UsuarioModel = Saboro.Core.Models.Usuario;
 using Saboro.Web.ViewModels.Login;
 using Saboro.Web.ViewModels.Usuario;
 
@@ -122,7 +123,7 @@ public class LoginController(INotification notification, IUsuarioRepository usua
             return BadRequest("Já existe um usuário cadastrado com este e-mail.");
 
 
-        var usuario = new Usuario
+        var usuario = new UsuarioModel
         {
             NomeCompleto = model.NomeCompleto,
             Email = model.Email,

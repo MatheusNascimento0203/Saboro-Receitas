@@ -1,0 +1,68 @@
+@model Saboro.Core.Models.Usuario;
+
+@{
+    Layout = null;
+}
+
+@if (Model != null)
+{
+    <div id="modal-alterar-senha" uk-modal="esc-close: false; bg-close: false;">
+        <div class="uk-modal-dialog uk-modal-body uk-border-rounded uk-margin-auto-vertical">
+            <button class="uk-modal-close-default uk-text-bold text-black" type="button" uk-close></button>
+            <form
+                onsubmit="event.preventDefault(); saboro.usuario.alterarSenha(this, '@Url.Action("PostAlterarSenha", "Usuario")')">
+                <div class="uk-flex uk-flex-middle">
+                    <div class="uk-flex uk-flex-column gap-modal-exclusao">
+                        <h4 class="uk-text-bold uk-margin-remove">Alterar Senha</h4>
+                        <div>
+                            <label class="uk-form-label uk-text-bold uk-text-small">Senha Atual<span
+                                    class="icone-obrigatorio">*</span></label>
+                            <div
+                                class="uk-form-controls uk-padding-remove-top uk-padding-remove-left uk-padding-remove-right uk-padding-small ">
+                                <input class="uk-input uk-border-rounded focus-input" type="password" name="Senha"
+                                    id="senha-atual" placeholder="Insira a senha atual..." value=""
+                                    data-rules="required" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="uk-form-label uk-text-bold uk-text-small">Nova Senha<span
+                                    class="icone-obrigatorio">*</span></label>
+                            <div
+                                class="uk-form-controls uk-padding-remove-top uk-padding-remove-left uk-padding-remove-right uk-padding-small ">
+                                <input class="uk-input uk-border-rounded focus-input" type="password" name="NovaSenha"
+                                    id="senha-atual" placeholder="Insira a nova senha..." value=""
+                                    data-rules="required" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="uk-form-label uk-text-bold uk-text-small">Repita Nova Senha<span
+                                    class="icone-obrigatorio">*</span></label>
+                            <div
+                                class="uk-form-controls uk-padding-remove-top uk-padding-remove-left uk-padding-remove-right uk-padding-small ">
+                                <input class="uk-input uk-border-rounded focus-input" type="password" name="NovaSenhaConfirmacao"
+                                    id="senha-atual" placeholder="Repita a Nova Senha..." value=""
+                                    data-rules="required" />
+                            </div>
+                        </div>
+                        <div class="uk-flex uk-margin-small-top gap-botoes">
+                            <button id="cancelar-alterar-senha-@Model.Id"
+                                class="uk-text-center uk-padding-small uk-margin-small-right uk-padding-remove-top uk-padding-remove-bottom uk-flex uk-flex-middle uk-flex-center uk-border-rounded btn-cancelar-alterar-senha"
+                                onclick="saboro.usuario.fecharAlterarSenha()"
+                                type="button">Cancelar</button>
+                            <button id="confirmar-alterar-senha-@Model.Id"
+                                class="uk-padding-small uk-padding-remove-top uk-padding-remove-bottom uk-background-primary uk-flex uk-flex-middle uk-flex-center uk-border-rounded btn-confirmar-alterar-senha"
+                                type="submit">Confirmar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="uk-text-center uk-margin-medium-top">
+        <p>Usuário não encontrado.</p>
+    </div>
+}

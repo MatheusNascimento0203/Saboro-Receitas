@@ -53,8 +53,6 @@ export function editarReceita(form: HTMLFormElement, url: string) {
     $.post({ url, data: formData })
         .done(() => {
             Loading.show();
-            console.log(url);
-            console.log(formData);
             Toast.success("Receita editada com sucesso!");
         })
         .fail((erro) => {

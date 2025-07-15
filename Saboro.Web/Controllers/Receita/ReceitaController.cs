@@ -131,7 +131,7 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
         var receita = await _receitaRepository.BuscarReceitaPorIdAsync(id);
 
         if (receita == null)
-            return BadRequest("Receita não encontrada.");
+            return BadRequest("Receita não encontrada..");
 
         await _receitaRepository.RemoverAsync(id);
         return Ok("Receita removida com sucesso!");
