@@ -171,8 +171,6 @@ export function removerPasso(id) {
     if (div) {
         div.remove();
     }
-
-    // Após remover, atualiza os números dos que ficaram
     atualizarNumeracaoPassos();
 }
 
