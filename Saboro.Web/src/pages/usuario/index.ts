@@ -39,7 +39,7 @@ export function getEditarPerfil() {
 }
 
 export function getAlterarSenha() {
-        $.get(model.urls.formAlterarSenha)
+    $.get(model.urls.formAlterarSenha)
         .done(() => {
             UIkit.modal("#modal-alterar-senha").show();
         })
@@ -102,13 +102,20 @@ export function excluirReceita(url: string) {
             Loading.show();
             $.post(url)
                 .done(() => {
-                    Toast.success("Usuário excluído com sucesso!");
-                    UIkit.modal(
-                        `#modal-confirmacao-exclusao-usuário`
-                    ).hide();
-                    setInterval(() => {
-                    window.location.href = model.urls.indexLogin;
-                    }, 3000);
+                    UIkit.modal(`#modal-confirmacao-exclusao-usuário`).hide();
+                    // Mostra a modal de agradecimento
+                    UIkit.modal(`#modal-agradecimento`).show();
+
+                    let segundos = 5;
+                    const intervalo = setInterval(() => {
+                        segundos--;
+                        $("#contador-regressivo").text(segundos);
+
+                        if (segundos <= 0) {
+                            clearInterval(intervalo);
+                            window.location.href = model.urls.indexLogin;
+                        }
+                    }, 1000);
                 })
                 .fail((erro) => {
                     Toast.error(erro);
