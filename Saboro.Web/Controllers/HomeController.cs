@@ -1,6 +1,7 @@
 using Saboro.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Saboro.Core.Interfaces.Repositories;
+using System.Threading.Tasks;
 
 namespace Saboro.Web.Controllers;
 
@@ -9,18 +10,18 @@ public class HomeController(IReceitaRepository receitaRepository) : BaseControll
     private readonly IReceitaRepository _receitaRepository = receitaRepository;
 
     [HttpGet("home")]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         var usuario = HttpContext.GetUser();
         if (usuario == null)
             return RedirectToAction("Index", "Login");
 
-        var receitas = _receitaRepository.BuscarReceitaPorIdAsync(usuario.Id);
-        if (receitas != null)
+        var receitas = await _receitaRepository.BuscarReceitaPorUsuarioAsync(usuario.Id);
+        if (receitas != null && receitas.Any())
             return RedirectToAction("Index", "Receita");
 
         DisableCache();
-        return View();
+        return View("Index");
     }
 
     [HttpGet("logout")]

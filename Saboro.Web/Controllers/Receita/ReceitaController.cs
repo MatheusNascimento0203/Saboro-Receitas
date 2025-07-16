@@ -27,6 +27,10 @@ public class ReceitaController(INotification notification, ICategoriaFavoritaRep
             return Unauthorized();
 
         var receitas = await _receitaRepository.BuscarReceitaPorUsuarioAsync(usuario.Id);
+
+        if (receitas == null || !receitas.Any())
+            return RedirectToAction("Index", "Home");
+
         var receitasOrdenadas = receitas.OrderBy(r => r.TituloReceita).ToList();
         return View("Index", receitasOrdenadas);
     }
